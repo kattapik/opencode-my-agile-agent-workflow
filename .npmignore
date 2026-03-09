@@ -1,0 +1,17 @@
+# Files to include in npm package
+bin/
+templates/
+README.md
+package.json
+
+LICENSE
+
+# Files to exclude from npm package
+.opencode/
+node_modules/
+bun.lock
+*.log
+.DS_Store
+Thumbs.db
+.git/
+.gitignore

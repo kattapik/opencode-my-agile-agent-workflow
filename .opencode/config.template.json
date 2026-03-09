@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json.schemastore.org/opencode-config.json",
+  "version": "1.0.0",
+  "project": {
+    "name": "Your Project Name",
+    "description": "Brief description of your project",
+    "framework": "react|vue|next|nuxt|angular|svelte|other",
+    "language": "typescript|javascript",
+    "styling": "tailwind|css-modules|styled-components|scss|other"
+  },
+  "agents": {
+    "featureLead": {
+      "enabled": true,
+      "model": "primary",
+      "mode": "primary"
+    },
+    "systemAnalyst": {
+      "enabled": true,
+      "model": "opencode-go/kimi-k2.5",
+      "mode": "subagent",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": false
+      }
+    },
+    "developer": {
+      "enabled": true,
+      "model": "github-copilot/gpt-5.1-codex-mini",
+      "mode": "subagent",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    },
+    "prReviewer": {
+      "enabled": true,
+      "model": "github-copilot/claude-haiku-4.5",
+      "mode": "subagent",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false
+      }
+    }
+  },
+  "ralph": {
+    "enabled": true,
+    "defaultMaxIterations": 10,
+    "defaultTimeoutMs": 300000,
+    "parallelDefault": false,
+    "autoVerify": true,
+    "exportCheckpoints": true,
+    "validatePrd": true,
+    "detectEdgeCases": true
+  },
+  "plugins": {
+    "lintFormat": {
+      "enabled": true,
+      "runOnEdit": true,
+      "extensions": [".ts", ".tsx", ".js", ".jsx", ".vue", ".scss", ".css"],
+      "commands": {
+        "format": "npm run format",
+        "lint": "npm run lint"
+      }
+    },
+    "validateStandards": {
+      "enabled": true,
+      "strictMode": true,
+      "checkOnSave": true
+    },
+    "validateTypescript": {
+      "enabled": true,
+      "strictMode": true,
+      "checkOnSave": true
+    }
+  },
+  "verification": {
+    "commands": {
+      "typeCheck": "npx tsc --noEmit",
+      "lint": "npm run lint",
+      "test": "npm test",
+      "build": "npm run build",
+      "all": "npm test && npm run lint && npx tsc --noEmit && npm run build"
+    },
+    "successPatterns": {
+      "typeCheck": "Found 0 errors",
+      "lint": "no problems",
+      "test": "All tests passed",
+      "build": "Build successful"
+    }
+  },
+  "quality": {
+    "testCoverage": {
+      "enabled": true,
+      "minimum": 70,
+      "target": 80
+    },
+    "maxFileSize": {
+      "enabled": true,
+      "maxLines": 500,
+      "warningLines": 300
+    },
+    "complexity": {
+      "enabled": true,
+      "maxCyclomaticComplexity": 10
+    }
+  },
+  "git": {
+    "autoCommit": false,
+    "commitMessageTemplate": "{{type}}({{scope}}): {{subject}}",
+    "branchNamingTemplate": "{{type}}/{{ticket}}-{{description}}",
+    "types": ["feat", "fix", "refactor", "docs", "test", "chore"]
+  },
+  "paths": {
+    "agents": ".opencode/agents",
+    "skills": ".opencode/skills",
+    "plugins": ".opencode/plugins",
+    "templates": ".opencode/templates",
+    "context": "context",
+    "output": "output"
+  },
+  "logging": {
+    "level": "info",
+    "file": ".opencode/opencode.log",
+    "console": true
+  }
+}
