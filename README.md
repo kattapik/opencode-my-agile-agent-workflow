@@ -5,7 +5,11 @@ Scaffold OpenCode LLM SpecKit into any project with a single command.
 ## Quick Start
 
 ```bash
+# default
 npx create-opencode-agile
+
+# explicit latest (recommended for docs/releases)
+npx create-opencode-agile@latest
 ```
 
 ## What This CLI Installs
