@@ -1,5 +1,5 @@
 {
-  "name": "create-opencode-agile",
+  "name": "opencode-agile-agent",
   "version": "1.0.1",
   "description": "AI Agile Spec-Driven Development - Install .opencode agile agent system into any project",
   "keywords": [
@@ -17,6 +17,7 @@
   "license": "MIT",
   "type": "module",
   "bin": {
+    "opencode-agile-agent": "./bin/cli.js",
     "create-opencode-agile": "./bin/cli.js"
   },
   "main": "./bin/cli.js",

@@ -1,4 +1,4 @@
-# create-opencode-agile
+# opencode-agile-agent
 
 Scaffold OpenCode LLM SpecKit into any project with a single command.
 
@@ -6,10 +6,13 @@ Scaffold OpenCode LLM SpecKit into any project with a single command.
 
 ```bash
 # default
-npx create-opencode-agile
+npx opencode-agile-agent
 
 # explicit latest (recommended for docs/releases)
-npx create-opencode-agile@latest
+npx opencode-agile-agent@latest
+
+# legacy alias (still supported)
+npx create-opencode-agile
 ```
 
 ## What This CLI Installs
