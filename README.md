@@ -1,186 +1,64 @@
 # create-opencode-agile
 
-> **Scaffold AI-powered spec-driven development with OpenCode Agile Agent**
+Scaffold OpenCode LLM SpecKit into any project with a single command.
 
-[![npm version](https://img.shields.io/npm/v/create-opencode-agile.svg)](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io/badge/size-green.svg)
-
-**CLI tool to install OpenCode Agile Agent - a complete spec-driven development workflow with specialized AI agents**
-
-##  Quick Start
-
-```bash
-# Run with npx (no installation required)
-npx create-opencode-agile
-
-# Or install globally
-npm install -g create-opencode-agile
-```
-
-##  What it does
-
-This CLI tool will:
-
-1. **Detect your project** - Automatically detects your framework (React, Vue, Next.js, etc.)
-2. **Copy `.opencode` templates** - Installs agent definitions and skills
-3. **Generate `AGENTS.md`** - Creates project-specific coding standards
-4. **Set up documentation** - Provides complete workflow guide
-
-##  What's Included
-
-###  Specialized Agents (4)
-
-| Agent | Role | Description |
-|-------|------|-------------|
-| **Feature Lead** | Orchestrator | Coordinates entire feature development workflow |
-| **System Analyst** | Planner | Creates specs, proposals, and task breakdown |
-| **Developer** | Implementer | Implements code based on specifications |
-| **PR Reviewer** | Validator | Validates code against philosophy and standards |
-
-###  Loop Check System (Ralph Wiggum)
-
-- **Autonomous iteration** with learning
-- **Verification loops** - Auto-verify until success
-- **Edge case detection** - Proactive identification of boundary conditions
-- **Multi-agent state sharing** - Export/import state
-
-###  Spec-Driven Development
-
-- **PRD Templates** - Product Requirements Document
-- **Proposal Template** - Business justification
-- **Spec Template** - Technical specification
-- **Task Template** - Atomic implementation checklist
-
-###  Smart Features
-
-- **Philosophy-driven code** - The 5 Laws of Elegant Defense
-- **Context-aware decision making**
-- **Anti-pattern prevention**
-- **Variation encouragement**
-
-##  Requirements
-
-- Node.js 18.0.0 or higher
-- npm or yarn
-
-##  Usage
-
-### Option 1: Interactive Mode
+## Quick Start
 
 ```bash
 npx create-opencode-agile
 ```
 
-The CLI will prompt you:
-- Project name
-- Framework
-- Language
-- Styling
-- State management
-- Testing
+## What This CLI Installs
 
-### Option 2: Quick Install (Non-Interactive)
+This package copies a full .opencode template into your target project, including:
 
-```bash
-npx create-opencode-agile --yes
-```
+1. Specialist agents in .opencode/agents
+2. Reusable skills in .opencode/skills
+3. Workflow commands in .opencode/workflows
+4. Shared rules in .opencode/rules
+5. Project docs and config under .opencode
+6. A generated AGENTS.md in project root
 
-This will:
-- Skip all prompts
-- Use detected configuration
-- Install with default settings
+## Template Source Of Truth
 
-### Option 3: Specific Framework
+The installer uses the folder below as the template source:
 
-```bash
-# React project
-npx create-opencode-agile --framework react
+- templates/.opencode
 
-# Vue project  
-npx create-opencode-agile --framework vue
+This folder is now synced from the project .opencode kit so every npx install gets the same LLM SpecKit content.
 
-# Next.js project
-npx create-opencode-agile --framework next
-```
+## Installed Structure (Summary)
 
-##  Project Structure After Installation
-
-```
+```text
 your-project/
 ├── .opencode/
 │   ├── agents/
-│   │   ├── feature-lead.md
-│   │   ├── developer.md
-│   │   ├── system-analyst.md
-│   │   └── pr-reviewer.md
 │   ├── skills/
-│   │   └── code-philosophy/
-│   │       └── SKILL.md
+│   ├── workflows/
+│   ├── rules/
+│   ├── ARCHITECTURE.md
 │   ├── README.md
 │   ├── config.template.json
 │   └── package.json
-├── AGENTS.md          # Project-specific coding standards
-└── package.json
+└── AGENTS.md
 ```
 
-##  Example Workflow
+## Requirements
 
-```
-User: I want to implement user authentication with JWT
+- Node.js 16+
 
-Agent (Feature Lead):
-  🔍 Searching codebase...
-  ✅ Found: User type in src/types/user.types.ts
-  ✅ Found: User store in src/stores/user.store.ts
-  
-  📋 Quick questions:
-  1. Search by: name only, or also email/role?
-  2. Real-time search or search button?
-  3. Where should search appear?
+## Development Notes
 
-User: 1. Name and email, 2. Real-time, 3. UserListPage
+- Main CLI: bin/cli.js
+- Template validator: bin/validate-templates.js
+- Published files: bin, templates, README.md
 
-Agent (Feature Lead):
-  Perfect! Delegating to System Analyst for planning...
-  
-  ✅ System Analyst created:
-  - proposal.md: User stories and success criteria
-  - spec.md: Search API, store updates, component changes
-  - task.md: 12 atomic tasks
-  
-  Delegating to Developer...
-  
-  ✅ Developer completed:
-  - Created SearchInput component
-  - Updated UserListPage with search
-  - Added search to User store
-  - Added API endpoint
-  
-  Delegating to PR Reviewer...
-  
-  ✅ PR Reviewer: APPROVED
-  
-  🎉 Feature Complete!
+## Validate Template Before Publish
+
+```bash
+node bin/validate-templates.js
 ```
 
-##  Important Notes
+## License
 
-- **Customize `AGENTS.md`** after installation for your specific project rules
-- **Read `.opencode/README.md`** for detailed workflow information
-- **Set up proper TypeScript/ESLint config** for best results
-
-##  Links
-- [npm](https://www.npmjs.com/package/create-opencode-agile)
-- [GitHub](https://github.com/opencode-ai/opencode-agile)
-- [Documentation](https://opencode-ai.github.io/opencode-agile)
-
-##  License
-
-MIT  [OpenCode AI](https://opencode.ai)
-
-##  Contributing
-
-Contributions are welcome! Please read our contributing guidelines first.
-
-##  Issues
-
-Found a bug? Please open an issue on GitHub.
+MIT

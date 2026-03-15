@@ -392,9 +392,11 @@ async function install() {
 ${colors.green}OpenCode Agile Agent has been installed successfully!${colors.reset}
 
 ${colors.cyan}What's included:${colors.reset}
-  ✓ .opencode/agents/       - 4 specialized agents (Feature Lead, System Analyst, Developer, PR Reviewer)
-  ✓ .opencode/skills/       - Code philosophy and best practices
-  ✓ .opencode/README.md     - Complete documentation
+  ✓ .opencode/agents/       - Full LLM SpecKit agent set
+  ✓ .opencode/skills/       - Reusable skill modules
+  ✓ .opencode/workflows/    - Workflow command templates
+  ✓ .opencode/rules/        - Shared coding and git conventions
+  ✓ .opencode/README.md     - Kit documentation
   ✓ AGENTS.md               - Project-specific coding standards
 
 ${colors.cyan}Next steps:${colors.reset}

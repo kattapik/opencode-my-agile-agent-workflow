@@ -1,480 +1,391 @@
-#  OpenCode Template - Agile Agent-Driven Development
+# OpenCode Agent Kit
 
-> **Complete template for spec-driven, autonomous development with AI agents**
+> **Multi-Agent Orchestration System for OpenCode**
 > 
-> Copy this `.opencode` folder to any project and customize `AGENTS.md` for your stack.
+> Inspired by Antigravity Kit, adapted for OpenCode's native agent system
 
 ---
 
-##  What's Included
+## What's Included
 
-###  **Working Team Agents** (4 Specialized Agents)
-- **Feature Lead** - Orchestrator that coordinates the entire workflow
-- **System Analyst** - Creates specs, proposals, and task breakdowns
-- **Developer** - Implements code based on specifications
-- **PR Reviewer** - Validates against code philosophy and standards
+### 20 Specialist Agents
 
-###  **Perfect Loop Check System**
-- **Ralph Wiggum Integration** - Autonomous iteration with learning
-- **Verification Loops** - Auto-verify until success criteria met
-- **Edge Case Detection** - Proactive identification of boundary conditions
-- **Multi-Agent State Sharing** - Export/import state between agents
+| Category | Agents |
+|----------|--------|
+| **Coordination** | orchestrator, project-planner, explorer-agent |
+| **Development** | frontend-specialist, backend-specialist, mobile-developer, game-developer |
+| **Data** | database-architect, api-designer |
+| **Quality** | test-engineer, qa-automation-engineer, security-auditor, penetration-tester |
+| **Operations** | devops-engineer, performance-optimizer, seo-specialist |
+| **Product** | product-manager, product-owner, documentation-writer |
+| **Maintenance** | debugger, code-archaeologist |
 
-###  **Spec-Driven Development**
-- **PRD Templates** - Product Requirements Document
-- **Proposal Template** - Business justification and user stories
-- **Spec Template** - Technical specification
-- **Task Template** - Atomic implementation checklist
+### Core Skills
 
-###  **Smart Instruction Prompts**
-- Philosophy-driven code principles
-- Context-aware decision making
-- Anti-pattern prevention
-- Variation encouragement
+- `clean-code` - Global coding standards
+- `intelligent-routing` - Automatic agent detection
+- `parallel-agents` - Multi-agent coordination
+- `brainstorming` - Socratic discovery
+- `plan-writing` - Task breakdown
+- `testing-patterns` - Testing strategies
+- `api-patterns` - API design
+- `frontend-design` - UI/UX patterns
+- `systematic-debugging` - Debug methodology
 
-###  **Flexible Agile Workflows**
-- Sequential execution for dependencies
-- Parallel execution for independent tasks
-- Iterative refinement loops
-- Multi-phase delivery
+### 11 Workflows
 
----
-
-##  Quick Start
-
-### 1. Copy Template to Your Project
-
-```bash
-cp -r .opencode /path/to/your/project/
-cd /path/to/your/project
-```
-
-### 2. Customize AGENTS.md
-
-Edit `AGENTS.md` in your project root with:
-- Your tech stack (framework, language, state management)
-- Project-specific conventions
-- File naming patterns
-- Key architectural rules
-
-### 3. Start Using Agents
-
-```
-You: I want to implement user authentication with JWT
-
-Agent: I'll orchestrate this feature end-to-end.
-→ Gathering requirements...
-→ Delegating to System Analyst for specs...
-→ Delegating to Developer for implementation...
-→ Delegating to PR Reviewer for validation...
-→ ✅ Feature complete!
-```
+| Command | Description |
+|---------|-------------|
+| `/brainstorm` | Explore options, clarify requirements |
+| `/create` | Build new features |
+| `/debug` | Fix bugs systematically |
+| `/deploy` | Deploy to production |
+| `/orchestrate` | Multi-agent coordination |
+| `/plan` | Create task breakdowns |
+| `/preview` | Preview changes |
+| `/status` | Check project health |
+| `/test` | Run and generate tests |
+| `/review` | Code review workflow |
+| `/enhance` | Improve existing code |
 
 ---
 
-##  Directory Structure
+## Quick Start
+
+### 1. Use the Orchestrator
+
+The orchestrator automatically routes to the right specialist:
+
+```
+You: Add JWT authentication
+
+Orchestrator: 🤖 Applying @security-auditor + @backend-specialist...
+[Work proceeds with expert-level assistance]
+```
+
+### 2. Use Workflows
+
+```
+/brainstorm user dashboard
+/create checkout page
+/debug login error
+/plan feature breakdown
+```
+
+### 3. Direct Agent Invocation
+
+```
+Use the frontend-specialist to build the dashboard
+Use the security-auditor to review authentication
+```
+
+---
+
+## Directory Structure
 
 ```
 .opencode/
-├── README.md                          # This file
-├── agents/
-│   ├── feature-lead.md                # Orchestrator agent
-│   ├── system-analyst.md              # Planning & specs agent
-│   ├── developer.md                   # Implementation agent
-│   └── pr-reviewer.md                 # Code review agent
-├── skills/
-│   ├── ralph-wiggum/
-│   │   ├── SKILL.md                   # Ralph loop guide
-│   │   ├── templates/
-│   │   │   ├── prd-template.md        # PRD structure
-│   │   │   ├── planning-template.md   # Planning structure
-│   │   │   └── spec-template.md       # Spec structure
-│   │   └── examples/
-│   │       ├── basic-loop.md          # Simple loop example
-│   │       ├── multi-agent.md         # Multi-agent example
-│   │       └── spec-driven.md         # Spec-driven example
-│   └── code-philosophy/
-│       └── SKILL.md                   # Code principles
-├── plugins/
-│   ├── ralph-wiggum.ts                # Ralph integration plugin
-│   ├── validate-standards.ts          # Standards validation
-│   └── lint-format.ts                 # Auto lint/format
-├── templates/
-│   ├── AGENTS.template.md             # Template for AGENTS.md
-│   ├── prd-template.md                # PRD template
-│   ├── proposal-template.md           # Proposal template
-│   ├── spec-template.md               # Spec template
-│   └── task-template.md               # Task checklist template
-└── docs/
-    ├── workflow.md                    # Complete workflow guide
-    ├── agent-guide.md                 # How to work with agents
-    └── troubleshooting.md             # Common issues & fixes
+├── ARCHITECTURE.md          # System documentation
+├── README.md                # This file
+├── agents/                  # 20 Specialist Agents
+│   ├── orchestrator.md      # Master coordinator
+│   ├── project-planner.md   # Discovery & planning
+│   ├── frontend-specialist.md
+│   ├── backend-specialist.md
+│   ├── database-architect.md
+│   ├── mobile-developer.md
+│   ├── devops-engineer.md
+│   ├── security-auditor.md
+│   ├── penetration-tester.md
+│   ├── test-engineer.md
+│   ├── debugger.md
+│   ├── performance-optimizer.md
+│   ├── seo-specialist.md
+│   ├── documentation-writer.md
+│   ├── product-manager.md
+│   ├── product-owner.md
+│   ├── qa-automation-engineer.md
+│   ├── code-archaeologist.md
+│   ├── explorer-agent.md
+│   ├── api-designer.md
+│   └── game-developer.md
+├── skills/                  # Domain Knowledge
+│   ├── clean-code/
+│   ├── intelligent-routing/
+│   ├── parallel-agents/
+│   ├── brainstorming/
+│   ├── plan-writing/
+│   ├── testing-patterns/
+│   ├── api-patterns/
+│   ├── frontend-design/
+│   └── systematic-debugging/
+├── workflows/               # Slash Commands
+│   ├── brainstorm.md
+│   ├── create.md
+│   ├── debug.md
+│   ├── deploy.md
+│   ├── orchestrate.md
+│   ├── plan.md
+│   ├── test.md
+│   ├── status.md
+│   ├── review.md
+│   └── enhance.md
+└── rules/                   # Global Standards
+    ├── coding-standards.md
+    └── git-conventions.md
 ```
 
 ---
 
-##  Core Workflow
+## Intelligent Routing
 
-### Phase 1: Requirements Gathering
-```
-User Request → Feature Lead → Clarify Requirements
-                                    ↓
-                            Search Codebase
-                                    ↓
-                            Ask Missing Details
-```
+The system automatically detects which agent(s) to use:
 
-### Phase 2: Planning
 ```
-Feature Lead → System Analyst
-                    ↓
-              ┌─────┴─────┐
-              ↓           ↓           ↓
-         proposal.md  spec.md    task.md
-              ↓           ↓           ↓
-         (business)  (technical) (checklist)
+User: "Add JWT authentication"
+→ Detected: Security + Backend
+→ Agents: security-auditor, backend-specialist
+
+User: "Fix the dashboard button"
+→ Detected: Frontend
+→ Agents: frontend-specialist
+
+User: "Optimize slow queries"
+→ Detected: Database + Performance
+→ Agents: database-architect, performance-optimizer
 ```
 
-### Phase 3: Implementation
-```
-Feature Lead → Developer
-                    ↓
-              Execute task.md
-                    ↓
-              Create/Modify files
-                    ↓
-              Run lint & format
-```
+### Keyword Detection
 
-### Phase 4: Review
-```
-Feature Lead → PR Reviewer
-                    ↓
-              Check philosophy
-                    ↓
-              Check standards
-                    ↓
-              Check code quality
-                    ↓
-         ┌───────┴───────┐
-         ↓               ↓
-      APPROVED    CHANGES REQUESTED
-         ↓               ↓
-      Done          Back to Developer
-```
+| Keywords | Agent(s) |
+|----------|----------|
+| component, react, vue, css | frontend-specialist |
+| api, endpoint, server | backend-specialist |
+| database, schema, sql | database-architect |
+| security, vulnerability, auth | security-auditor |
+| test, jest, playwright | test-engineer |
+| bug, error, fix | debugger |
+| deploy, docker, ci/cd | devops-engineer |
+| performance, optimize | performance-optimizer |
 
-### Phase 5: Verification (Loop)
+---
+
+## Multi-Agent Orchestration
+
+### When to Orchestrate
+
+- Tasks requiring multiple perspectives
+- Full-stack features
+- Comprehensive reviews
+- Complex implementations
+
+### Example
+
 ```
-If errors exist:
-    Developer → Fix → Review → (loop until clean)
-    
-Or use Ralph Loop:
-    ralph_loop_start → Auto-iterate → Verify → Done
+User: /orchestrate build secure user management
+
+Orchestrator:
+  Analyzing task...
+  Domains: Auth, Frontend, Backend, Database, Security
+  
+  Agents selected:
+  1. database-architect (schema)
+  2. backend-specialist (API)
+  3. frontend-specialist (UI)
+  4. security-auditor (review)
+  5. test-engineer (tests)
+  
+  [Execution proceeds...]
+  
+  Synthesis Report:
+  - Files created: 12
+  - Files modified: 5
+  - Tests added: 24
+  - Security issues: 2 (fixed)
+  
+  ✅ Complete!
 ```
 
 ---
 
-##  Agent Roles
+## Agent Reference
 
-### 1. Feature Lead (Orchestrator)
-- **Mode:** Primary (user-facing)
-- **Responsibilities:**
-  - Gather and clarify requirements
-  - Coordinate between agents
-  - Resolve ambiguities
-  - Make final decisions
-  - Report progress to user
+### Coordination
 
-### 2. System Analyst (Planner)
-- **Mode:** Subagent
-- **Responsibilities:**
-  - Create business proposals
-  - Write technical specifications
-  - Break down into atomic tasks
-  - Identify dependencies
-  - Flag open questions
+| Agent | Use When |
+|-------|----------|
+| `orchestrator` | Multi-agent coordination |
+| `project-planner` | Task breakdown, planning |
+| `explorer-agent` | Codebase exploration |
 
-### 3. Developer (Implementer)
-- **Mode:** Subagent
-- **Responsibilities:**
-  - Read specs fully before coding
-  - Follow AGENTS.md conventions
-  - Implement task checklist
-  - Run lint/format after changes
-  - Report modifications
+### Development
 
-### 4. PR Reviewer (Validator)
-- **Mode:** Subagent
-- **Responsibilities:**
-  - Check code philosophy
-  - Validate against standards
-  - Identify anti-patterns
-  - Ensure test coverage
-  - Approve or request changes
+| Agent | Use When |
+|-------|----------|
+| `frontend-specialist` | UI components, React/Vue |
+| `backend-specialist` | APIs, server logic |
+| `mobile-developer` | React Native, Flutter |
+| `game-developer` | Unity, Godot |
 
----
+### Data
 
-##  Loop Check System
+| Agent | Use When |
+|-------|----------|
+| `database-architect` | Schema, migrations |
+| `api-designer` | API design, OpenAPI |
 
-### Ralph Wiggum Loop
-```
-ralph_loop_start({
-  prd_path: "feature.md",
-  max_iterations: 10,
-  timeout_ms: 300000,
-  parallel: false,
-  validate_prd: true,
-  detect_edge_cases: true
-})
-```
+### Quality
 
-### Verification Pattern
-```
-ralph_verify({
-  verification_command: "npm test && npm run lint",
-  success_pattern: "All tests passed",
-  spec_compliance_check: true,
-  edge_case_tests: ["empty input", "null values", "concurrent access"]
-})
-```
+| Agent | Use When |
+|-------|----------|
+| `test-engineer` | Writing tests |
+| `qa-automation-engineer` | E2E infrastructure |
+| `security-auditor` | Security review |
+| `penetration-tester` | Security testing |
 
-### State Sharing
-```
-// Export state
-const state = ralph_export({ state_id: "feature-plan" })
+### Operations
 
-// Import in another agent
-ralph_import({ state_json: state })
-```
+| Agent | Use When |
+|-------|----------|
+| `devops-engineer` | CI/CD, deployment |
+| `performance-optimizer` | Performance tuning |
+| `seo-specialist` | SEO optimization |
+
+### Product
+
+| Agent | Use When |
+|-------|----------|
+| `product-manager` | Requirements |
+| `product-owner` | Backlog, MVP |
+| `documentation-writer` | Docs (when requested) |
+
+### Maintenance
+
+| Agent | Use When |
+|-------|----------|
+| `debugger` | Bug fixing |
+| `code-archaeologist` | Legacy code |
 
 ---
 
-##  When to Use What
-
-| Scenario | Agent/Tool | Why |
-|----------|-----------|-----|
-| New feature from scratch | Feature Lead → Full Team | Complete workflow needed |
-| Simple bug fix | Developer directly | No planning needed |
-| Complex refactoring | Ralph Loop + Developer | Iterative improvement |
-| Add tests | Developer + PR Reviewer | Implementation + validation |
-| Architecture change | System Analyst → Proposal | Planning required |
-| Multi-service feature | Ralph Loop (parallel) | Independent tasks |
-| Code review | PR Reviewer | Validation only |
-
----
-
-##  Smart Patterns
-
-### Pattern 1: Spec-First Development
-```
-1. System Analyst creates spec.md
-2. User reviews and approves spec
-3. Developer implements from spec
-4. PR Reviewer validates against spec
-→ Zero ambiguity, clear success criteria
-```
-
-### Pattern 2: Iterative Refinement
-```
-1. Ralph Loop starts with MVP PRD
-2. Auto-iterate until verification passes
-3. Export state
-4. Import and continue with enhancements
-→ Progressive delivery with learning
-```
-
-### Pattern 3: Parallel Execution
-```
-1. System Analyst creates specs for 3 services
-2. Ralph Loop runs all 3 in parallel
-3. Each service has isolated state
-4. Final integration verification
-→ Speed through isolation
-```
-
-### Pattern 4: Guard-Driven Development
-```
-1. PR Reviewer checks guard clauses
-2. Fail fast on invalid states
-3. Parse at boundaries, trust inside
-4. Pure functions, no hidden mutations
-→ Robust, maintainable code
-```
-
----
-
-##  Configuration
-
-### Customize Agents
-
-Edit agent `.md` files to:
-- Change models (e.g., `model: opencode-go/gpt-4`)
-- Adjust tool permissions
-- Modify instructions
-
-### Environment Variables
-
-```bash
-# Ralph settings
-export RALPH_MAX_ITERATIONS=20
-export RALPH_TIMEOUT_MS=600000
-export RALPH_AUTO_VERIFY=true
-
-# Agent settings
-export AGENT_MODEL_PRIMARY=opencode
-export AGENT_MODEL_PLANNING=sonnet
-export AGENT_MODEL_CODING=claude
-```
-
-### Plugin Configuration
-
-Create `.opencode/config.json`:
-```json
-{
-  "plugins": {
-    "ralph-wiggum": {
-      "enabled": true,
-      "max_iterations": 15,
-      "timeout_ms": 300000
-    },
-    "validate-standards": {
-      "enabled": true,
-      "strict_mode": true
-    }
-  }
-}
-```
-
----
-
-##  Philosophy
+## Philosophy
 
 ### The 5 Laws of Elegant Code
 
-1. **Guard Clauses** - Handle unhappy path first
-2. **Parsed State** - Trust types at the boundary
-3. **Purity** - Functions should be predictable
-4. **Fail Loud** - Invalid states must scream
-5. **Readability** - Code reads like a sentence
+1. **Guard Clauses First** - Handle unhappy paths at the beginning
+2. **Parsed State at Boundaries** - Validate input at the edge
+3. **Pure Functions** - Same input → same output
+4. **Fail Loud** - Invalid states should throw errors
+5. **Readability First** - Code reads like a sentence
 
-### Spec-Driven Manifesto
+### Multi-Agent Principles
 
-> **Specs first, code second.** Define what "done" looks like before writing any code. A PRD with clear tasks and acceptance criteria is worth more than 1000 lines of implementation.
-
-### Iterative Autonomy
-
-> **Fail fast, learn faster.** Each failed iteration teaches the system. Loops don't just retry—they adapt based on previous failures.
-
----
-
-##  Examples
-
-### Example 1: Add User Authentication
-```
-User: Add JWT authentication with refresh tokens
-
-Feature Lead: 
-  ✅ Gathering requirements...
-  ✅ Delegating to System Analyst...
-  
-System Analyst:
-  ✅ Created proposal.md (user stories, success criteria)
-  ✅ Created spec.md (endpoints, types, store)
-  ✅ Created task.md (atomic checklist)
-  
-Feature Lead:
-  ✅ Specs approved by user
-  ✅ Delegating to Developer...
-  
-Developer:
-  ✅ Implemented all checklist items
-  ✅ Created 8 files, modified 3 files
-  ✅ Ran lint and format
-  
-Feature Lead:
-  ✅ Delegating to PR Reviewer...
-  
-PR Reviewer:
-  ✅ All philosophy checks passed
-  ✅ All standard checks passed
-  ✅ APPROVED
-  
-Feature Lead:
-  🎉 Feature complete! Summary:
-  - 5 API endpoints
-  - 2 Pinia stores
-  - 4 Vue components
-  - 15 unit tests
-  - All verification passed
-```
-
-### Example 2: Fix All TypeScript Errors (Ralph Loop)
-```
-User: Fix all TypeScript errors in the project
-
-Agent: This is a good candidate for Ralph Loop.
-  📋 Loop Plan:
-  - Task: Fix TypeScript errors
-  - Max Iterations: 15
-  - Verification: npx tsc --noEmit
-  - Success: No errors found
-  
-  Proceed? (yes/no)
-
-User: yes
-
-[Ralph Loop running autonomously...]
-
-Iteration 1: Found 23 errors → Fixed 8
-Iteration 2: Found 15 errors → Fixed 7
-Iteration 3: Found 8 errors → Fixed 5
-Iteration 4: Found 3 errors → Fixed 3
-Iteration 5: Verification passed ✅
-
-✅ Ralph completed! All TypeScript errors fixed.
-```
+1. **Specialists over generalists** - Each agent excels in their domain
+2. **Boundaries respected** - Agents don't cross into other domains
+3. **Intelligent routing** - System detects the right agent
+4. **Parallel when possible** - Independent tasks run together
+5. **Synthesis at the end** - Results combined into unified output
 
 ---
 
-##  Troubleshooting
+## Examples
 
-### Agent not understanding requirements?
-→ Feature Lead didn't gather enough context. Ask more specific questions.
+### Example 1: Build Feature
 
-### Loops not progressing?
-→ Check `ralph_status({ verbose: true })`. PRD might be too vague.
+```
+User: /create user dashboard
 
-### Code not following standards?
-→ PR Reviewer caught it. Developer needs to re-read AGENTS.md.
+Agent: I'll help you create a user dashboard.
 
-### State conflicts in parallel execution?
-→ Tasks aren't truly independent. Run sequentially instead.
+🤖 Routing to: frontend-specialist + backend-specialist
+
+[frontend-specialist]
+- Created DashboardPage component
+- Created DashboardWidget components
+- Added responsive design
+
+[backend-specialist]
+- Created /api/dashboard endpoint
+- Added data aggregation
+- Implemented caching
+
+✅ Dashboard complete!
+- Files created: 8
+- Files modified: 3
+- Tests added: 12
+```
+
+### Example 2: Debug Issue
+
+```
+User: /debug login returns 500 error
+
+Agent: I'll help you debug this.
+
+🤖 Routing to: debugger
+
+Step 1: Reproduce ✅
+Step 2: Gather information ✅
+Step 3: Hypothesize ✅
+Step 4: Test ✅
+Step 5: Fix ✅
+Step 6: Verify ✅
+
+Root cause: Async password hashing without await
+Fix: Added await to hash() call
+
+✅ Login working!
+```
+
+### Example 3: Security Review
+
+```
+User: /review authentication security
+
+Agent: I'll review the authentication system.
+
+🤖 Routing to: security-auditor
+
+Review Findings:
+
+[CRITICAL] Timing attack vulnerability
+- Location: auth.service.ts:45
+- Issue: String comparison for tokens
+- Fix: Use timing-safe comparison
+
+[HIGH] Missing rate limiting
+- Location: /api/auth/login
+- Issue: No brute force protection
+- Fix: Add rate limiting middleware
+
+✅ Review complete!
+2 issues found, fixes provided
+```
 
 ---
 
-##  Customization Checklist
+## Statistics
 
-- [ ] Copy `.opencode/` to your project
-- [ ] Edit `AGENTS.md` with your stack
-- [ ] Customize agent instructions if needed
-- [ ] Set up plugins in `config.json`
-- [ ] Add project-specific skills
-- [ ] Test with a simple feature
-- [ ] Adjust iteration limits as needed
+| Metric | Count |
+|--------|-------|
+| **Agents** | 20 |
+| **Skills** | 9+ |
+| **Workflows** | 11 |
+| **Coverage** | ~90% web/mobile development |
 
 ---
 
-##  Contributing
+## Contributing
 
-Found a better pattern? Improved an agent? 
+Found a better pattern? Improved an agent?
 → Share it back to improve this template!
 
 ---
 
-##  License
+## License
 
 MIT - Use freely in any project.
 
 ---
 
-**Built with  for agile, spec-driven development**
+**Built with  for multi-agent AI development**

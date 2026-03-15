@@ -10,14 +10,23 @@ const templatesDir = join(__dirname, '..', 'templates');
 
 // Required files for templates
 const requiredFiles = [
+  '.opencode/README.md',
+  '.opencode/ARCHITECTURE.md',
+  '.opencode/config.template.json',
+  '.opencode/package.json',
+  '.opencode/agents/orchestrator.md',
   '.opencode/agents/feature-lead.md',
   '.opencode/agents/developer.md',
   '.opencode/agents/system-analyst.md',
   '.opencode/agents/pr-reviewer.md',
-  '.opencode/skills/code-philosophy/SKILL.md',
-  '.opencode/README.md',
-  '.opencode/config.template.json',
-  '.opencode/package.json',
+  '.opencode/skills/clean-code/SKILL.md',
+  '.opencode/skills/plan-writing/SKILL.md',
+  '.opencode/skills/testing-patterns/SKILL.md',
+  '.opencode/workflows/create.md',
+  '.opencode/workflows/plan.md',
+  '.opencode/workflows/review.md',
+  '.opencode/rules/coding-standards.md',
+  '.opencode/rules/git-conventions.md',
 ];
 
 let hasErrors = false;
@@ -45,76 +54,5 @@ if (hasErrors) {
   process.exit(1);
 } else {
   console.log('✅ All templates validated successfully!');
-  process.exit(0);
-}
-
-// Check required files
-console.log('Checking required files...');
-
-// First check if main directories exist
-const mainDirs = [
-  '.opencode/agents',
-  '.opencode/skills',
-  '.opencode/skills/code-philosophy',
-];
-
-mainDirs.forEach(dir => {
-  const dirPath = join(templatesDir, dir);
-  if (existsSync(dirPath) && statSync(dirPath).isDirectory()) {
-    console.log(`  ✓ ${dir}/`);
-  } else {
-    console.error(`  ✗ ${dir}/ - MISSING`);
-    hasErrors = true;
-    return;
-  }
-});
-
-// Check for specific important files
-const importantFiles = [
-  '.opencode/agents/feature-lead.md',
-  '.opencode/agents/developer.md',
-  '.opencode/agents/system-analyst.md',
-  '.opencode/agents/pr-reviewer.md',
-  '.opencode/skills/code-philosophy/SKILL.md',
-  '.opencode/README.md',
-  '.opencode/config.template.json',
-  '.opencode/package.json',
-];
-
-importantFiles.forEach(file => {
-  const filePath = join(templatesDir, file);
-  if (existsSync(filePath) && statSync(filePath).isFile()) {
-    console.log(`  ✓ ${file}`);
-  } else {
-    console.error(`  ✗ ${file} - MISSING`);
-    hasErrors = true;
-  }
-});
-
-// Check directory structure
-console.log('\nChecking directory structure:');
-const directories = [
-  '.opencode/agents',
-  '.opencode/skills',
-  '.opencode/skills/code-philosophy',
-];
-
-directories.forEach(dir => {
-  const dirPath = join(templatesDir, dir);
-  if (existsSync(dirPath) && statSync(dirPath).isDirectory()) {
-    const files = readdirSync(dirPath);
-    console.log(`  ✓ ${dir}/ (${files.length} files)`);
-  } else {
-    console.error(`  ✗ ${dir}/ - MISSING`);
-    hasErrors = true;
-  }
-});
-
-console.log('');
-if (hasErrors) {
-  console.error('❌ Validation failed! Some required files are missing.');
-  process.exit(1);
-} else {
-  console.log('✅ All templates validated successfully!\n');
   process.exit(0);
 }
