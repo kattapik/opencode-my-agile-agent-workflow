@@ -5,3 +5,11 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
+AGENTS.md
+.opencode/archive/
+templates/.opencode/
+.opencode/commands/
+.opencode/skills/context-archive/
+.opencode/skills/context-gathering/
+.opencode/skills/redteam-validation/
+.opencode/skills/security-gate/

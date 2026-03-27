@@ -1,71 +1,61 @@
 # opencode-agile-agent
 
-Scaffold OpenCode LLM SpecKit into any project with a single command.
+Scaffold the OpenCode spec-driven agent kit into any project with one confirmation.
 
 ## Quick Start
+- `npx opencode-agile-agent`
+- `npx opencode-agile-agent@latest`
+- `npx create-opencode-agile`
 
-```bash
-# default
-npx opencode-agile-agent
+## Install Flow
+- The installer asks one yes/no question.
+- Framework, language, and project name are auto-detected.
+- Confirmed installs copy `.opencode` and generate `AGENTS.md`.
+- Declining exits immediately.
 
-# explicit latest (recommended for docs/releases)
-npx opencode-agile-agent@latest
+## What Gets Installed
+- 25 agents
+- 14 skills
+- 7 commands
+- Shared rules, docs, and project config
 
-# legacy alias (still supported)
-npx create-opencode-agile
-```
+## Custom Commands
+- `.opencode/commands/*.md` holds the slash commands.
+- Each command uses Markdown frontmatter plus a prompt body, matching OpenCode's command format.
+- The command set is `brainstorm`, `create`, `debug`, `plan`, `review`, `status`, and `test`.
 
-## What This CLI Installs
+## Design Notes
+- Skills are compact, philosophy-first, and loaded by intent.
+- `security-gate` decides when a change needs a security gate or redteam phase.
+- `redteam-validation` simulates attacker behavior and proves exploitability.
+- `qa-automation-engineer` is support-only for harness and CI plumbing, not the default test path.
+- `orchestrator` is optional; default routing stays with `feature-lead` and the owning specialists.
+- The compact planning bundle is proposal.md, goal.md, spec.md, task.md, and important.md.
+- `@feature-lead` is the primary entry point; the rest are subagents.
+- Completed feature bundles are archived in `.opencode/archive/<feature-slug>/`.
 
-This package copies a full .opencode template into your target project, including:
-
-1. Specialist agents in .opencode/agents
-2. Reusable skills in .opencode/skills
-3. Workflow commands in .opencode/workflows
-4. Shared rules in .opencode/rules
-5. Project docs and config under .opencode
-6. A generated AGENTS.md in project root
+## Spec-Driven Flow
+- `@feature-lead` is the primary entry point.
+- `@context-gatherer` maps the current project before any planning or proof.
+- `@project-planner` and `@system-analyst` build `proposal.md`, `goal.md`, `spec.md`, `task.md`, and `important.md`.
+- `@developer` implements the approved spec.
+- `@test-engineer`, `@security-auditor`, `@penetration-tester`, and `@pr-reviewer` close the loop.
+- `@feature-lead` archives the completed bundle in `.opencode/archive/<feature-slug>/`.
 
 ## Template Source Of Truth
-
-The installer uses the folder below as the template source:
-
-- templates/.opencode
-
-This folder is now synced from the project .opencode kit so every npx install gets the same LLM SpecKit content.
-
-## Installed Structure (Summary)
-
-```text
-your-project/
-├── .opencode/
-│   ├── agents/
-│   ├── skills/
-│   ├── workflows/
-│   ├── rules/
-│   ├── ARCHITECTURE.md
-│   ├── README.md
-│   ├── config.template.json
-│   └── package.json
-└── AGENTS.md
-```
+- `templates/.opencode` mirrors the project kit.
+- Use `node bin/sync-templates.js` after editing `.opencode`.
 
 ## Requirements
-
 - Node.js 16+
 
 ## Development Notes
-
-- Main CLI: bin/cli.js
-- Template validator: bin/validate-templates.js
-- Published files: bin, templates, README.md
+- Main CLI: `bin/cli.js`
+- Template validator: `bin/validate-templates.js`
+- Template sync: `bin/sync-templates.js`
 
 ## Validate Template Before Publish
-
-```bash
-node bin/validate-templates.js
-```
+- `node bin/validate-templates.js`
 
 ## License
-
-MIT
+- MIT

@@ -1,45 +1,68 @@
 # AGENTS.md - [Project Name]
 
-> **Instructions for AI agents working on this project**
-> 
-> This file defines _how_ to build. For _what_ to build, see feature requirements.
+> Instructions for AI agents working on this project.
+>
+> How to build lives here; what to build comes from feature specs.
 
 ---
 
-##  Project Stack
+## Project Stack
 
 <!-- CUSTOMIZE THIS SECTION -->
 
-- **Framework:** [e.g., React, Vue, Next.js, NestJS, Express]
-- **Language:** [e.g., TypeScript, JavaScript, Python, Go]
-- **State Management:** [e.g., Redux, Pinia, Zustand, None]
-- **Routing:** [e.g., React Router, Vue Router, Next Router]
-- **HTTP Client:** [e.g., Axios, Fetch, SWR]
-- **Build Tool:** [e.g., Vite, Webpack, esbuild]
-- **Testing:** [e.g., Jest, Vitest, Mocha]
-- **Styling:** [e.g., Tailwind, CSS Modules, Styled Components]
+- Framework: [e.g. React, Vue, Next.js, NestJS, Express]
+- Language: [e.g. TypeScript, JavaScript, Python, Go]
+- State Management: [e.g. Redux, Pinia, Zustand, None]
+- Routing: [e.g. React Router, Vue Router, Next Router]
+- HTTP Client: [e.g. Axios, Fetch, SWR]
+- Build Tool: [e.g. Vite, Webpack, esbuild]
+- Testing: [e.g. Jest, Vitest, Playwright]
+- Styling: [e.g. Tailwind, CSS Modules, Styled Components]
 
 ---
 
-##  Core Documentation (CRITICAL)
+## Core Documentation
 
-Before making architectural or styling decisions, **review** these documents:
+Review these before making architectural or styling decisions:
 
 | Document | Purpose | Location |
 |----------|---------|----------|
-| API Standards | API response structure, error handling | `docs/api-standards.md` |
-| UI Standards | Styling rules, component patterns | `docs/ui-standards.md` |
-| Code Style | Linting, formatting rules | `.eslintrc.js`, `.prettierrc` |
-| Architecture | System design, data flow | `docs/architecture.md` |
-| Database | Schema, relationships | `docs/database.md` |
+| OpenCode README | Kit overview and flow | `.opencode/README.md` |
+| OpenCode Architecture | Agent lifecycle and gates | `.opencode/ARCHITECTURE.md` |
+| Agent prompts | Role-specific behavior | `.opencode/agents/*.md` |
+| Commands | Custom slash commands | `.opencode/commands/*.md` |
+| Rules | Shared coding standards | `.opencode/rules/*.md` |
 
 ---
 
-##  Code Conventions
+## OpenCode Delivery Model
+
+- Primary agent: `@feature-lead`
+- First call: `@context-gatherer` maps the current project state before planning or proof.
+- Other agents are subagents and are called with `@` awareness.
+- Security-sensitive work: `@security-auditor` first, then `@penetration-tester` for redteam validation when needed.
+- Compact context bundle:
+  - `proposal.md`: why, value, scope
+  - `goal.md`: target outcome, constraints, default choice
+  - `spec.md`: contract, data flow, edge cases, risks
+  - `task.md`: ordered checklist, dependencies, owners
+  - `important.md`: facts, blockers, links, decisions
+- Archive completed bundles in `.opencode/archive/<feature-slug>/`.
+- Default first: choose a safe default when the downside is small.
+- Ask only when scope, security, or architecture changes materially.
+- Keep handoffs compact and explicit.
+
+## Skill Design
+
+- Keep each skill small, philosophy-first, and single-purpose.
+- Put the trigger in the description field so agents can load it by intent.
+- Prefer the smallest skill that answers the next decision.
+
+---
+
+## Code Conventions
 
 ### File Naming
-
-<!-- CUSTOMIZE THESE PATTERNS -->
 
 | Type | Pattern | Example |
 |------|---------|---------|
@@ -54,210 +77,61 @@ Before making architectural or styling decisions, **review** these documents:
 
 ### Code Style
 
-<!-- CUSTOMIZE THESE RULES -->
-
-- **Indentation:** [2 spaces / 4 spaces / tabs]
-- **Quotes:** [single / double]
-- **Semicolons:** [required / none]
-- **Line Width:** [80 / 100 / 120]
-- **Trailing Commas:** [always / none / es5]
-
-### TypeScript/JavaScript
-
-```typescript
-// ✅ GOOD: Explicit types
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-function getUser(id: string): Promise<User> {
-  return api.get(`/users/${id}`);
-}
-
-// ❌ BAD: Any type
-function getUser(id: any): any {
-  return api.get(`/users/${id}`);
-}
-```
-
-### Error Handling
-
-```typescript
-// ✅ GOOD: Unknown error with proper casting
-try {
-  await saveUser(user);
-} catch (err: unknown) {
-  const e = err as { response?: { data?: { message?: string } } };
-  error.value = e.response?.data?.message ?? 'Operation failed';
-}
-
-// ❌ BAD: Any error
-try {
-  await saveUser(user);
-} catch (err: any) {
-  error.value = err.message;
-}
-```
+- Indentation: [2 spaces / 4 spaces / tabs]
+- Quotes: [single / double]
+- Semicolons: [required / none]
+- Line Width: [80 / 100 / 120]
+- Trailing Commas: [always / none / es5]
 
 ---
 
-##  Project-Specific Rules
+## Project-Specific Rules
 
 <!-- ADD YOUR CUSTOM RULES HERE -->
 
-### Rule 1: [Rule Name]
-
-Description of the rule and why it exists.
-
-```typescript
-// ✅ GOOD: Example
-// ❌ BAD: Anti-example
-```
-
-### Rule 2: [Rule Name]
-
-Description...
+- [Add the defaults, tradeoffs, and exceptions for this project]
+- [Call out anything the agents should never do]
 
 ---
 
-##  Architecture Patterns
+## Architecture Patterns
 
 ### State Management
 
 <!-- CUSTOMIZE FOR YOUR STATE SOLUTION -->
 
-```typescript
-// ✅ Store pattern example
-export const useAuthStore = defineStore('auth', () => {
-  // State
-  const user = ref<User | null>(null);
-  const loading = ref(false);
-  const error = ref<string | null>(null);
-
-  // Getters
-  const isAuthenticated = computed(() => !!user.value);
-
-  // Actions
-  async function login(credentials: LoginDto): Promise<void> {
-    loading.value = true;
-    error.value = null;
-    try {
-      user.value = await authApi.login(credentials);
-    } catch (err: unknown) {
-      const e = err as { response?: { data?: { message?: string } } };
-      error.value = e.response?.data?.message ?? 'Login failed';
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  }
-
-  return { user, loading, error, isAuthenticated, login };
-});
-```
+- [Describe your store pattern]
+- [Describe where state lives]
+- [Describe how async work is handled]
 
 ### API Layer
 
-```typescript
-// ✅ API calls separated from components
-// src/api/user.api.ts
-import api from './axios';
-
-export const userApi = {
-  getAll: () => api.get<User[]>('/users'),
-  getById: (id: string) => api.get<User>(`/users/${id}`),
-  create: (data: CreateUserDto) => api.post<User>('/users', data),
-  update: (id: string, data: UpdateUserDto) => api.put<User>(`/users/${id}`, data),
-  delete: (id: string) => api.delete(`/users/${id}`),
-};
-```
+- [Describe request and response patterns]
+- [Describe how errors are normalized]
+- [Describe versioning or contract rules]
 
 ### Component Structure
 
-```typescript
-// ✅ Component with clear structure
-<script setup lang="ts">
-import { ref, computed } from 'vue';
-import type { User } from '@/types';
-
-// Props
-interface Props {
-  user: User;
-  readonly?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), {
-  readonly: false,
-});
-
-// Emits
-interface Emits {
-  (e: 'update', user: User): void;
-  (e: 'delete', id: string): void;
-}
-const emit = defineEmits<Emits>();
-
-// State
-const isEditing = ref(false);
-
-// Computed
-const displayName = computed(() => 
-  props.user.name || 'Anonymous'
-);
-
-// Methods
-function handleUpdate() {
-  emit('update', props.user);
-  isEditing.value = false;
-}
-</script>
-
-<template>
-  <div class="user-card">
-    <!-- Template here -->
-  </div>
-</template>
-
-<style scoped>
-/* Styles here */
-</style>
-```
+- [Describe component conventions]
+- [Describe where logic belongs]
+- [Describe how loading and error states appear]
 
 ---
 
-##  Testing Standards
+## Testing Standards
 
-### Unit Tests
+- Unit tests: [what to test]
+- Integration tests: [what to test]
+- E2E tests: [critical flows]
+- Quality gate: [coverage or manual verification target]
 
-```typescript
-// ✅ Test structure
-describe('useAuthStore', () => {
-  beforeEach(() => {
-    // Setup
-  });
+---
 
-  afterEach(() => {
-    // Cleanup
-  });
+## Quick Reference
 
-  it('should login successfully', async () => {
-    // Arrange
-    const credentials = { email: 'test@example.com', password: 'password' };
-    
-    // Act
-    await authStore.login(credentials);
-    
-    // Assert
-    expect(authStore.isAuthenticated).toBe(true);
-    expect(authStore.user).toBeDefined();
-  });
-
-  it('should handle login error', async () => {
-    // Test error case
-  });
-});
-```
+- Validate templates: `node bin/validate-templates.js`
+- Sync templates: `node bin/sync-templates.js`
+- Entry point: `@feature-lead`
 
 ### Test Coverage
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import { existsSync, mkdirSync, cpSync, writeFileSync, readFileSync } from 'fs';
+import { dirname, join, sep } from 'path';
+import { existsSync, mkdirSync, cpSync, writeFileSync, readFileSync, rmSync } from 'fs';
 import { createInterface } from 'readline';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const templatesDir = join(__dirname, '..', 'templates');
+const rootDir = join(__dirname, '..');
+const templatesDir = join(rootDir, 'templates');
 
-// Colors for terminal output
 const colors = {
   reset: '\x1b[0m',
   bright: '\x1b[1m',
@@ -21,411 +21,321 @@ const colors = {
 };
 
 const log = {
-  info: (msg) => console.log(`${colors.blue}ℹ${colors.reset} ${msg}`),
-  success: (msg) => console.log(`${colors.green}✓${colors.reset} ${msg}`),
-  warn: (msg) => console.log(`${colors.yellow}⚠${colors.reset} ${msg}`),
-  error: (msg) => console.log(`${colors.red}✗${colors.reset} ${msg}`),
+  info: (msg) => console.log(`${colors.blue}[i]${colors.reset} ${msg}`),
+  success: (msg) => console.log(`${colors.green}[ok]${colors.reset} ${msg}`),
+  warn: (msg) => console.log(`${colors.yellow}[!]${colors.reset} ${msg}`),
+  error: (msg) => console.log(`${colors.red}[x]${colors.reset} ${msg}`),
   title: (msg) => console.log(`\n${colors.bright}${colors.cyan}${msg}${colors.reset}\n`),
 };
 
-// ASCII Art Banner
 const banner = `
-${colors.cyan}╔═══════════════════════════════════════════════════════════╗
-║                                                           ║
-║   ${colors.bright}OpenCode Agile Agent - Spec-Driven Development${colors.reset}${colors.cyan}     ║
-║                                                           ║
-╚═══════════════════════════════════════════════════════════╝${colors.reset}
+${colors.cyan}========================================${colors.reset}
+${colors.cyan} OpenCode Agile Agent Installer ${colors.reset}
+${colors.cyan} Spec-driven, one-prompt setup ${colors.reset}
+${colors.cyan}========================================${colors.reset}
 `;
 
-// Create readline interface
 const rl = createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
-// Promisify question
 const question = (prompt) => new Promise((resolve) => {
   rl.question(prompt, resolve);
 });
 
-// Detect project framework
-async function detectProjectFramework() {
-  const packageJsonPath = join(process.cwd(), 'package.json');
-  
+const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log(`
+OpenCode Agile Agent Installer
+
+Usage:
+  opencode-agile-agent
+
+What it does:
+  - Asks one yes/no question.
+  - Detects the project stack automatically.
+  - Copies .opencode and generates AGENTS.md.
+
+Commands:
+  --help, -h   Show this help message
+`);
+  rl.close();
+  process.exit(0);
+}
+
+function shouldCopyPath(path) {
+  return !path.includes(`${sep}node_modules${sep}`) && !path.endsWith(`${sep}node_modules`);
+}
+
+function detectProjectContext() {
+  const defaults = {
+    projectName: 'My Project',
+    framework: 'Generic',
+    language: 'JavaScript',
+    styling: 'Follow existing styles',
+    stateManagement: 'None / follow existing patterns',
+    testing: 'Follow existing tests',
+  };
+
+  const packageJsonPath = join(rootDir, 'package.json');
+
   if (!existsSync(packageJsonPath)) {
-    return { framework: 'unknown', language: 'javascript' };
+    return defaults;
   }
-  
+
   try {
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-    const deps = { ...packageJson.dependencies, ...packageJson.devDependencies };
-    
-    // Detect framework
-    if (deps['next']) return { framework: 'next', language: 'typescript' };
-    if (deps['nuxt']) return { framework: 'nuxt', language: 'typescript' };
-    if (deps['@angular/core']) return { framework: 'angular', language: 'typescript' };
-    if (deps['svelte']) return { framework: 'svelte', language: 'typescript' };
-    if (deps['vue'] || deps['vue2'] || deps['vue3']) return { framework: 'vue', language: 'typescript' };
-    if (deps['react'] || deps['react-dom']) return { framework: 'react', language: 'typescript' };
-    if (deps['express']) return { framework: 'express', language: 'typescript' };
-    if (deps['fastify']) return { framework: 'fastify', language: 'typescript' };
-    if (deps['nestjs'] || deps['@nestjs/core']) return { framework: 'nestjs', language: 'typescript' };
-    
-    // Check for TypeScript
-    const hasTypeScript = deps['typescript'] || existsSync(join(process.cwd(), 'tsconfig.json'));
-    
-    return { 
-      framework: 'generic', 
-      language: hasTypeScript ? 'typescript' : 'javascript' 
+    const deps = { ...(packageJson.dependencies ?? {}), ...(packageJson.devDependencies ?? {}) };
+    const has = (name) => Boolean(deps[name]);
+
+    const framework = has('next')
+      ? 'Next.js'
+      : has('nuxt')
+        ? 'Nuxt.js'
+        : has('@angular/core')
+          ? 'Angular'
+          : has('svelte')
+          ? 'Svelte'
+          : has('vue') || has('vue2') || has('vue3')
+              ? 'Vue'
+              : has('react-native') || has('expo')
+                ? 'React Native'
+              : has('react') || has('react-dom')
+                ? 'React'
+                : has('express')
+                  ? 'Express'
+                  : has('fastify')
+                    ? 'Fastify'
+                    : has('nestjs') || has('@nestjs/core')
+                      ? 'NestJS'
+                      : 'Generic';
+
+    const language = has('typescript') || existsSync(join(rootDir, 'tsconfig.json'))
+      ? 'TypeScript'
+      : 'JavaScript';
+
+    const styling = has('tailwindcss')
+      ? 'Tailwind'
+      : has('styled-components')
+        ? 'Styled Components'
+        : has('sass') || has('scss')
+          ? 'SCSS'
+          : has('css-modules')
+            ? 'CSS Modules'
+            : 'Follow existing styles';
+
+    const stateManagement = has('pinia')
+      ? 'Pinia'
+      : has('zustand')
+        ? 'Zustand'
+        : has('redux') || has('@reduxjs/toolkit')
+          ? 'Redux'
+          : has('mobx')
+            ? 'MobX'
+            : 'None / follow existing patterns';
+
+    const testing = has('vitest')
+      ? 'Vitest'
+      : has('jest')
+        ? 'Jest'
+        : has('playwright')
+          ? 'Playwright'
+          : has('cypress')
+            ? 'Cypress'
+            : 'Follow existing tests';
+
+    return {
+      ...defaults,
+      projectName: packageJson.name || defaults.projectName,
+      framework,
+      language,
+      styling,
+      stateManagement,
+      testing,
     };
   } catch {
-    return { framework: 'unknown', language: 'javascript' };
+    return defaults;
   }
 }
 
-// Framework options
-const frameworkOptions = [
-  { name: 'React', value: 'react' },
-  { name: 'Vue.js', value: 'vue' },
-  { name: 'Next.js', value: 'next' },
-  { name: 'Nuxt.js', value: 'nuxt' },
-  { name: 'Angular', value: 'angular' },
-  { name: 'Svelte', value: 'svelte' },
-  { name: 'NestJS', value: 'nestjs' },
-  { name: 'Express', value: 'express' },
-  { name: 'Fastify', value: 'fastify' },
-  { name: 'Generic / Other', value: 'generic' },
-];
+function generateAgentsMd(context) {
+  return `# AGENTS.md - ${context.projectName}
 
-// Generate AGENTS.md based on project config
-function generateAgentsMd(config) {
-  const { projectName, framework, language, styling, stateManagement, testing } = config;
-  
-  return `# AGENTS.md - ${projectName}
-
-> **Instructions for AI agents working on this project**
-> 
-> This file defines _how_ to build. For _what_ to build, see feature requirements.
+> Instructions for AI agents working on this project.
+>
+> How to build lives here; what to build comes from feature specs.
 
 ---
 
-## 📦 Project Stack
+## Project Stack
 
-- **Framework:** ${framework.charAt(0).toUpperCase() + framework.slice(1)}
-- **Language:** ${language.charAt(0).toUpperCase() + language.slice(1)}
-- **Styling:** ${styling}
-- **State Management:** ${stateManagement}
-- **Testing:** ${testing}
+- Framework: ${context.framework}
+- Language: ${context.language}
+- State Management: ${context.stateManagement}
+- Styling: ${context.styling}
+- Testing: ${context.testing}
 
 ---
 
-## 📚 Core Documentation (CRITICAL)
+## Core Documentation
 
-Before making architectural or styling decisions, **review** these documents:
+Review these before making architectural or styling decisions:
 
 | Document | Purpose | Location |
 |----------|---------|----------|
-| API Standards | API response structure, error handling | \`docs/api-standards.md\` |
-| UI Standards | Styling rules, component patterns | \`docs/ui-standards.md\` |
-| Code Style | Linting, formatting rules | \`.eslintrc.js\`, \`.prettierrc\` |
-| Architecture | System design, data flow | \`docs/architecture.md\` |
+| OpenCode README | Kit overview and flow | .opencode/README.md |
+| OpenCode Architecture | Agent lifecycle and gates | .opencode/ARCHITECTURE.md |
+| Agent prompts | Role-specific behavior | .opencode/agents/*.md |
+| Commands | Custom slash commands | .opencode/commands/*.md |
+| Rules | Shared coding standards | .opencode/rules/*.md |
 
 ---
 
-## 🎨 Code Conventions
+## OpenCode Delivery Model
+
+- Primary agent: @feature-lead
+- First call: @context-gatherer maps the current project state before planning or proof.
+- Other agents are subagents and are called with @ awareness.
+- Security-sensitive work: @security-auditor first, then @penetration-tester for redteam validation when needed.
+
+## Compact Context Bundle
+
+- proposal.md: why, value, scope
+- goal.md: target outcome, constraints, default choice
+- spec.md: contract, data flow, edge cases, risks
+- task.md: ordered checklist, dependencies, owners
+- important.md: facts, blockers, links, decisions
+
+## Archive
+
+- Archive completed bundles in .opencode/archive/<feature-slug>/.
+
+## Decision Style
+
+- Default first: choose a safe default when the downside is small.
+- Ask only when scope, security, or architecture changes materially.
+- Keep handoffs compact and explicit.
+
+---
+
+## Code Conventions
 
 ### File Naming
 
 | Type | Pattern | Example |
 |------|---------|---------|
-| Components | \`PascalCase.tsx\` | \`UserCard.tsx\` |
-| Pages | \`PascalCasePage.tsx\` | \`LoginPage.tsx\` |
-| Stores | \`camelCase.store.ts\` | \`auth.store.ts\` |
-| Hooks/Composables | \`useCamelCase.ts\` | \`useAuth.ts\` |
-| Types | \`camelCase.types.ts\` | \`user.types.ts\` |
-| Utils | \`camelCase.utils.ts\` | \`date.utils.ts\` |
-| API | \`camelCase.api.ts\` | \`auth.api.ts\` |
-| Tests | \`*.test.ts\` or \`*.spec.ts\` | \`auth.test.ts\` |
+| Components | PascalCase.tsx | UserCard.tsx |
+| Pages | PascalCasePage.tsx | LoginPage.tsx |
+| Stores | camelCase.store.ts | auth.store.ts |
+| Hooks/Composables | useCamelCase.ts | useAuth.ts |
+| Types | camelCase.types.ts | user.types.ts |
+| Utils | camelCase.utils.ts | date.utils.ts |
+| API | camelCase.api.ts | auth.api.ts |
+| Tests | *.test.ts or *.spec.ts | auth.test.ts |
 
 ### Code Style
 
-- **Indentation:** 2 spaces
-- **Quotes:** single
-- **Semicolons:** required
-- **Line Width:** 100
-- **Trailing Commas:** es5
+- Indentation: 2 spaces
+- Quotes: single
+- Semicolons: required
+- Line Width: 100
+- Trailing Commas: es5
 
 ---
 
-## 🔧 Project-Specific Rules
+## Project-Specific Rules
 
-<!-- ADD YOUR CUSTOM RULES HERE -->
-
-### Rule 1: Error Handling
-
-Always use proper error typing:
-
-\`\`\`typescript
-// ✅ GOOD
-try {
-  await saveUser(user);
-} catch (err: unknown) {
-  const e = err as { response?: { data?: { message?: string } } };
-  error.value = e.response?.data?.message ?? 'Operation failed';
-}
-
-// ❌ BAD
-catch (err: any) {
-  error.value = err.message;
-}
-\`\`\`
-
-### Rule 2: Type Safety
-
-Always use explicit types, never \`any\`:
-
-\`\`\`typescript
-// ✅ GOOD
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-function getUser(id: string): Promise<User> {
-  return api.get(\`/users/\${id}\`);
-}
-
-// ❌ BAD
-function getUser(id: any): any {
-  return api.get(\`/users/\${id}\`);
-}
-\`\`\`
+- Keep changes aligned to the compact spec bundle.
+- Prefer defaults when a tradeoff is low risk.
+- Surface options only when the decision changes scope, security, or architecture.
 
 ---
 
-## 🧪 Testing Standards
+## Architecture Patterns
 
-### Unit Tests
+### State Management
 
-\`\`\`typescript
-describe('useAuthStore', () => {
-  beforeEach(() => {
-    // Setup
-  });
+- Describe where state lives.
+- Keep async work inside the owning module.
+- Make loading and error states explicit.
 
-  afterEach(() => {
-    // Cleanup
-  });
+### API Layer
 
-  it('should login successfully', async () => {
-    // Arrange
-    const credentials = { email: 'test@example.com', password: 'password' };
-    
-    // Act
-    await authStore.login(credentials);
-    
-    // Assert
-    expect(authStore.isAuthenticated).toBe(true);
-    expect(authStore.user).toBeDefined();
-  });
-});
-\`\`\`
+- Keep request and response shapes explicit.
+- Normalize errors near the boundary.
+- Version breaking contract changes.
 
-### Test Coverage
+### Component Structure
 
-- **Minimum:** 70% coverage
-- **Target:** 80% coverage
-- **Critical paths:** 100% coverage (auth, payments, etc.)
+- Keep presentation and side effects separated.
+- Put validation near the boundary.
+- Make loading and error states visible.
 
 ---
 
-## 🚀 Quick Reference
+## Testing Standards
 
-### Commands
-
-\`\`\`bash
-# Development
-npm run dev          # Start dev server
-npm run build        # Production build
-npm run test         # Run tests
-npm run lint         # Lint check
-npm run format       # Format code
-npm run type-check   # TypeScript check (if applicable)
-\`\`\`
-
-### Important Files
-
-\`\`\`
-src/
-├── components/      # Reusable components
-├── pages/           # Page components
-├── stores/          # State management
-├── api/             # API calls
-├── types/           # TypeScript types
-├── utils/           # Utility functions
-└── hooks/           # Custom hooks/composables
-\`\`\`
+- Unit tests: pure logic and helper functions.
+- Integration tests: API calls and service boundaries.
+- E2E tests: critical user journeys.
+- Quality gate: verify behavior before release.
 
 ---
 
-## 💡 Key Reminders
+## Quick Reference
 
-1. **Follow existing patterns** - Check similar files first
-2. **Handle errors gracefully** - Always use try/catch/finally
-3. **Think about loading states** - UX matters
-4. **Use TypeScript strictly** - No \`any\` types
-5. **Test your code** - Write tests for critical logic
-
----
-
-**Keep this file updated as the project evolves.**
+- Validate templates: node bin/validate-templates.js
+- Sync templates: node bin/sync-templates.js
+- Entry point: @feature-lead
 `;
 }
 
-// Main installation function
 async function install() {
   console.log(banner);
-  
-  log.title('🚀 OpenCode Agile Agent Installer');
-  
-  // Check if .opencode already exists
-  const opencodePath = join(process.cwd(), '.opencode');
-  if (existsSync(opencodePath)) {
-    log.warn('.opencode directory already exists!');
-    const overwrite = await question('Do you want to overwrite it? (y/N): ');
-    if (overwrite.toLowerCase() !== 'y') {
-      log.info('Installation cancelled.');
-      rl.close();
-      return;
-    }
+  log.title('OpenCode Agile Agent Installer');
+
+  const confirm = await question('Install the OpenCode agent kit now? [y/N]: ');
+  if (!/^y(es)?$/i.test(confirm.trim())) {
+    log.info('Install cancelled.');
+    rl.close();
+    return;
   }
-  
-  // Detect project
-  log.info('Detecting project configuration...');
-  const detected = await detectProjectFramework();
-  
-  log.info(`Detected: ${detected.framework} (${detected.language})`);
-  
-  // Ask for project details
-  log.title('📝 Project Configuration');
-  
-  // Project name
-  let projectName = '';
-  try {
-    const packageJson = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf-8'));
-    projectName = packageJson.name || 'My Project';
-  } catch {
-    projectName = 'My Project';
+
+  const context = detectProjectContext();
+  log.info(`Detected project: ${context.projectName} (${context.framework}, ${context.language})`);
+
+  const source = join(templatesDir, '.opencode');
+  const target = join(rootDir, '.opencode');
+
+  if (!existsSync(templatesDir) || !existsSync(source)) {
+    log.error('Template source not found.');
+    rl.close();
+    process.exitCode = 1;
+    return;
   }
-  
-  const customName = await question(`Project name (${projectName}): `);
-  projectName = customName || projectName;
-  
-  // Framework selection
-  log.info('\nAvailable frameworks:');
-  frameworkOptions.forEach((opt, i) => {
-    const marker = opt.value === detected.framework ? ' (detected)' : '';
-    console.log(`  ${i + 1}. ${opt.name}${marker}`);
+
+  if (!existsSync(target)) {
+    mkdirSync(target, { recursive: true });
+  } else {
+    rmSync(target, { recursive: true, force: true });
+    mkdirSync(target, { recursive: true });
+  }
+
+  cpSync(source, target, {
+    recursive: true,
+    overwrite: true,
+    filter: shouldCopyPath,
   });
-  
-  const frameworkInput = await question(`Select framework (1-${frameworkOptions.length}) [default: ${detected.framework}]: `);
-  let framework = detected.framework;
-  if (frameworkInput) {
-    const idx = parseInt(frameworkInput) - 1;
-    if (idx >= 0 && idx < frameworkOptions.length) {
-      framework = frameworkOptions[idx].value;
-    }
-  }
-  
-  // Language
-  const languageInput = await question(`Language (typescript/javascript) [default: ${detected.language}]: `);
-  const language = languageInput || detected.language;
-  
-  // Styling
-  const stylingInput = await question(`Styling (tailwind/css-modules/styled-components/scss/other) [default: tailwind]: `);
-  const styling = stylingInput || 'tailwind';
-  
-  // State management
-  const stateInput = await question(`State management (pinia/zustand/redux/none) [default: none]: `);
-  const stateManagement = stateInput || 'none';
-  
-  // Testing
-  const testingInput = await question(`Testing (jest/vitest/mocha/none) [default: vitest]: `);
-  const testing = testingInput || 'vitest';
-  
-  const config = { projectName, framework, language, styling, stateManagement, testing };
-  
-  log.title('📦 Installing OpenCode Agile Agent...');
-  
-  // Create .opencode directory
-  try {
-    // Copy templates
-    log.info('Copying templates...');
-    
-    // Create .opencode directory
-    if (!existsSync(opencodePath)) {
-      mkdirSync(opencodePath, { recursive: true });
-    }
-    
-    // Copy all template files
-    const templateOpencode = join(templatesDir, '.opencode');
-    if (existsSync(templateOpencode)) {
-      cpSync(templateOpencode, opencodePath, { recursive: true, overwrite: true });
-      log.success('Templates copied successfully');
-    } else {
-      log.error('Templates directory not found!');
-      rl.close();
-      return;
-    }
-    
-    // Generate AGENTS.md
-    log.info('Generating AGENTS.md...');
-    const agentsMd = generateAgentsMd(config);
-    writeFileSync(join(process.cwd(), 'AGENTS.md'), agentsMd);
-    log.success('AGENTS.md generated');
-    
-    // Success message
-    log.title('✅ Installation Complete!');
-    
-    console.log(`
-${colors.green}OpenCode Agile Agent has been installed successfully!${colors.reset}
+  writeFileSync(join(rootDir, 'AGENTS.md'), generateAgentsMd(context), 'utf-8');
 
-${colors.cyan}What's included:${colors.reset}
-  ✓ .opencode/agents/       - Full LLM SpecKit agent set
-  ✓ .opencode/skills/       - Reusable skill modules
-  ✓ .opencode/workflows/    - Workflow command templates
-  ✓ .opencode/rules/        - Shared coding and git conventions
-  ✓ .opencode/README.md     - Kit documentation
-  ✓ AGENTS.md               - Project-specific coding standards
+  log.success('Installed .opencode and generated AGENTS.md.');
+  log.title('Done');
+  console.log('Start with @feature-lead and review .opencode/README.md for the flow.');
 
-${colors.cyan}Next steps:${colors.reset}
-  1. Review and customize AGENTS.md for your project
-  2. Start using agents with your AI assistant
-  3. Read .opencode/README.md for detailed workflow
-
-${colors.cyan}Example usage:${colors.reset}
-  "I want to implement user authentication with JWT"
-  
-  The agents will:
-  → Gather requirements
-  → Create specs and task breakdown
-  → Implement the feature
-  → Review code quality
-  → ✅ Deliver production-ready code
-
-${colors.yellow}Happy coding with AI-powered agile development! 🚀${colors.reset}
-`);
-    
-  } catch (error) {
-    log.error(`Installation failed: ${error.message}`);
-    console.error(error);
-  }
-  
   rl.close();
 }
 
-// Run installation
 install().catch((error) => {
   log.error(`Unexpected error: ${error.message}`);
   console.error(error);
