@@ -328,7 +328,7 @@ async function install() {
     overwrite: true,
     filter: shouldCopyPath,
   });
-  writeFileSync(join(rootDir, 'AGENTS.md'), generateAgentsMd(context), 'utf-8');
+  writeFileSync(join(projectRoot, 'AGENTS.md'), generateAgentsMd(context), 'utf-8');
 
   log.success('Installed .opencode and generated AGENTS.md.');
   log.title('Done');
