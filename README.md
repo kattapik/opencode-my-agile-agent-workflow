@@ -10,8 +10,12 @@ Scaffold the OpenCode spec-driven agent kit into any project with one confirmati
 ## Install Flow
 - The installer asks one yes/no question.
 - Framework, language, and project name are auto-detected.
-- Confirmed installs copy `.opencode` and generate `AGENTS.md`.
+- Confirmed installs copy `.opencode` into the current project root and generate `AGENTS.md` there.
 - Declining exits immediately.
+
+## Local Install
+- Run `npx opencode-agile-agent` from the repo you want to set up.
+- The installer writes to the current working directory, not the package directory.
 
 ## What Gets Installed
 - 25 agents

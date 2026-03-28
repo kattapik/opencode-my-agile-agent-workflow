@@ -7,8 +7,9 @@ import { createInterface } from 'readline';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const rootDir = join(__dirname, '..');
-const templatesDir = join(rootDir, 'templates');
+const packageRoot = join(__dirname, '..');
+const projectRoot = process.cwd();
+const templatesDir = join(packageRoot, 'templates');
 
 const colors = {
   reset: '\x1b[0m',
@@ -78,7 +79,7 @@ function detectProjectContext() {
     testing: 'Follow existing tests',
   };
 
-  const packageJsonPath = join(rootDir, 'package.json');
+  const packageJsonPath = join(projectRoot, 'package.json');
 
   if (!existsSync(packageJsonPath)) {
     return defaults;
@@ -306,7 +307,7 @@ async function install() {
   log.info(`Detected project: ${context.projectName} (${context.framework}, ${context.language})`);
 
   const source = join(templatesDir, '.opencode');
-  const target = join(rootDir, '.opencode');
+  const target = join(projectRoot, '.opencode');
 
   if (!existsSync(templatesDir) || !existsSync(source)) {
     log.error('Template source not found.');
