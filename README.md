@@ -18,15 +18,15 @@ Scaffold the OpenCode spec-driven agent kit into any project with one confirmati
 - The installer writes to the current working directory, not the package directory.
 
 ## What Gets Installed
-- 25 agents
+- 26 agents
 - 14 skills
-- 7 commands
+- 10 commands
 - Shared rules, docs, and project config
 
 ## Custom Commands
 - `.opencode/commands/*.md` holds the slash commands.
 - Each command uses Markdown frontmatter plus a prompt body, matching OpenCode's command format.
-- The command set is `brainstorm`, `create`, `debug`, `plan`, `review`, `status`, and `test`.
+- The command set is `brainstorm`, `create`, `debug`, `plan`, `progress`, `reframe`, `review`, `rubber-duck`, `status`, and `test`.
 
 ## Design Notes
 - Skills are compact, philosophy-first, and loaded by intent.
@@ -34,14 +34,14 @@ Scaffold the OpenCode spec-driven agent kit into any project with one confirmati
 - `redteam-validation` simulates attacker behavior and proves exploitability.
 - `qa-automation-engineer` is support-only for harness and CI plumbing, not the default test path.
 - `orchestrator` is optional; default routing stays with `feature-lead` and the owning specialists.
-- The compact planning bundle is proposal.md, goal.md, spec.md, task.md, and important.md.
+- The compact planning bundle is brief.md, spec.md, task.md, notes.md, and status.yaml.
 - `@feature-lead` is the primary entry point; the rest are subagents.
 - Completed feature bundles are archived in `.opencode/archive/<feature-slug>/`.
 
 ## Spec-Driven Flow
 - `@feature-lead` is the primary entry point.
 - `@context-gatherer` maps the current project before any planning or proof.
-- `@project-planner` and `@system-analyst` build `proposal.md`, `goal.md`, `spec.md`, `task.md`, and `important.md`.
+- `@project-planner` and `@system-analyst` build `brief.md`, `spec.md`, `task.md`, `notes.md`, and `status.yaml`.
 - `@developer` implements the approved spec.
 - `@test-engineer`, `@security-auditor`, `@penetration-tester`, and `@pr-reviewer` close the loop.
 - `@feature-lead` archives the completed bundle in `.opencode/archive/<feature-slug>/`.
@@ -49,6 +49,7 @@ Scaffold the OpenCode spec-driven agent kit into any project with one confirmati
 ## Template Source Of Truth
 - `templates/.opencode` mirrors the project kit.
 - Use `node bin/sync-templates.js` after editing `.opencode`.
+- `AGENTS.md` is generated per installed project and is not stored as a reusable template.
 
 ## Requirements
 - Node.js 16+

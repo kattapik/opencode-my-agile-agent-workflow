@@ -8,7 +8,7 @@ Spec-driven multi-agent system for OpenCode.
 
 - 25 agents
 - 14 skills
-- 7 commands
+- 10 commands
 
 ## Skill Design
 
@@ -28,29 +28,36 @@ Spec-driven multi-agent system for OpenCode.
 
 - Custom slash commands live in `.opencode/commands/`.
 - Each command file uses Markdown frontmatter plus a prompt body, matching OpenCode's command format.
-- The current command set is `brainstorm`, `create`, `debug`, `plan`, `review`, `status`, and `test`.
+- The current command set is `brainstorm`, `create`, `debug`, `plan`, `progress`, `reframe`, `review`, `rubber-duck`, `status`, and `test`.
 
 ## Primary Flow
 
 1. @feature-lead receives the request.
 2. @context-gatherer maps the current project state.
-3. @project-planner and @system-analyst create the compact bundle: proposal.md, goal.md, spec.md, task.md, and important.md.
+3. @project-planner and @system-analyst create the compact bundle: brief.md, spec.md, task.md, notes.md, and status.yaml.
 4. @developer implements the approved spec.
 5. @test-engineer, @security-auditor, @penetration-tester, and @pr-reviewer close the loop.
 6. @feature-lead archives the completed bundle.
 
 ## Context Bundle
 
-- proposal.md: why, value, scope
-- goal.md: target outcome, constraints, default choice
-- spec.md: contract, data flow, edge cases, risks
+- Templates live in `.opencode/templates/` for quick bundle creation.
+- brief.md: why, outcome, scope, constraints, default choice
+- spec.md: contract, data flow, edge cases, risks, acceptance criteria
 - task.md: ordered checklist, dependencies, owners
-- important.md: facts, blockers, links, decisions
+- notes.md: facts, decisions, blockers, links
+- status.yaml: live execution state
+
+- `status.yaml` is the live execution artifact; the markdown files stay as stable planning/reference context.
+- `status.yaml.status` allowed values: `active`, `blocked`, `review`, `done`.
 
 ## Archive
 
 - Completed bundles live in `.opencode/archive/<feature-slug>/`.
 - Keep the archive copy approved, compact, and read-only in practice.
+- Archive only when `status.yaml` is `done`.
+- Archive the full bundle: `brief.md`, `spec.md`, `task.md`, `notes.md`, and final `status.yaml`.
+- Only the main agent (`feature-lead` or `feature-loop`) should finalize the archive.
 
 ## Agent Groups
 
@@ -76,7 +83,10 @@ Spec-driven multi-agent system for OpenCode.
 | create | Build new features, components, or project slices with a spec-driven flow. |
 | debug | Diagnose and fix bugs using a root-cause approach. |
 | plan | Create structured task breakdowns and spec artifacts. |
+| progress | Check current status, visible changes, remaining work, and the next best step. |
+| reframe | Reset the framing when the output is off-target, unclear, or stuck repeating the same mistake. |
 | review | Review code against the spec, standards, and quality gates. |
+| rubber-duck | Think out loud, challenge assumptions, and isolate the real problem before changing anything. |
 | status | Check project health, docs, and operating readiness. |
 | test | Run and generate tests for the codebase. |
 

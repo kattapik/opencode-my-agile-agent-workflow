@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json.schemastore.org/opencode-config.json",
+  "$schema": "https://opencode.ai/config.json",
   "version": "1.0.0",
   "project": {
     "name": "Your Project Name",
@@ -8,16 +8,51 @@
     "language": "typescript|javascript",
     "styling": "tailwind|css-modules|styled-components|scss|other"
   },
-  "agents": {
-    "featureLead": {
+  "agent": {
+    "feature-lead": {
       "enabled": true,
       "model": "primary",
-      "mode": "primary"
+      "mode": "primary",
+      "temperature": 0.3,
+      "top_p": 0.9,
+      "steps": 50,
+      "permission": {
+        "task": {
+          "*": "allow",
+          "security-auditor": "ask",
+          "penetration-tester": "ask"
+        }
+      }
     },
-    "systemAnalyst": {
+    "feature-loop": {
+      "enabled": true,
+      "model": "primary",
+      "mode": "primary",
+      "temperature": 0.3,
+      "top_p": 0.92,
+      "steps": 100,
+      "permission": {
+        "task": {
+          "*": "allow",
+          "security-auditor": "ask",
+          "penetration-tester": "ask"
+        }
+      }
+    },
+    "system-analyst": {
       "enabled": true,
       "model": "opencode-go/kimi-k2.5",
       "mode": "subagent",
+      "temperature": 0.1,
+      "top_p": 0.85,
+      "steps": 30,
+      "permission": {
+        "task": {
+          "*": "deny",
+          "explorer-agent": "allow",
+          "context-gatherer": "allow"
+        }
+      },
       "tools": {
         "write": true,
         "edit": true,
@@ -28,32 +63,40 @@
       "enabled": true,
       "model": "github-copilot/gpt-5.1-codex-mini",
       "mode": "subagent",
+      "temperature": 0.2,
+      "top_p": 0.9,
+      "steps": 100,
+      "permission": {
+        "task": {
+          "*": "ask",
+          "pr-reviewer": "allow",
+          "test-engineer": "allow"
+        }
+      },
       "tools": {
         "write": true,
         "edit": true,
         "bash": true
       }
     },
-    "prReviewer": {
+    "pr-reviewer": {
       "enabled": true,
       "model": "github-copilot/claude-haiku-4.5",
       "mode": "subagent",
+      "temperature": 0.1,
+      "top_p": 0.8,
+      "steps": 40,
+      "permission": {
+        "task": {
+          "*": "deny"
+        }
+      },
       "tools": {
         "write": false,
         "edit": false,
         "bash": false
       }
     }
-  },
-  "ralph": {
-    "enabled": true,
-    "defaultMaxIterations": 10,
-    "defaultTimeoutMs": 300000,
-    "parallelDefault": false,
-    "autoVerify": true,
-    "exportCheckpoints": true,
-    "validatePrd": true,
-    "detectEdgeCases": true
   },
   "plugins": {
     "lintFormat": {
@@ -119,7 +162,8 @@
     "plugins": ".opencode/plugins",
     "templates": ".opencode/templates",
     "context": "context",
-    "output": "output"
+    "output": "output",
+    "checkpoints": ".opencode/checkpoints"
   },
   "logging": {
     "level": "info",

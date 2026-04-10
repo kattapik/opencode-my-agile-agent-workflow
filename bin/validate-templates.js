@@ -10,13 +10,11 @@ const templatesDir = join(__dirname, '..', 'templates');
 
 // Required files for templates
 const requiredFiles = [
-  'AGENTS.template.md',
   '.opencode/README.md',
   '.opencode/ARCHITECTURE.md',
   '.opencode/archive/README.md',
   '.opencode/config.template.json',
   '.opencode/package.json',
-  '.opencode/memory/project.md',
   '.opencode/agents/context-gatherer.md',
   '.opencode/agents/api-designer.md',
   '.opencode/agents/backend-specialist.md',

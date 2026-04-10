@@ -5,7 +5,6 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
-AGENTS.md
 .opencode/archive/
 templates/.opencode/
 .opencode/commands/

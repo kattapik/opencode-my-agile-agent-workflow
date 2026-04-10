@@ -2,6 +2,12 @@
 name: explorer-agent
 description: Read-only discovery subagent that finds exact files, patterns, and implementation references.
 mode: subagent
+temperature: 0.1
+top_p: 0.75
+steps: 25
+permission:
+  task:
+    "*": deny
 tools:
   read: true
   grep: true

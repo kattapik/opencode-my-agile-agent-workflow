@@ -1,0 +1,14 @@
+feature: <feature-slug>
+owner: <agent-or-person>
+handoff_to: <next-agent-or-person>
+stage: planning
+status: active # allowed: active | blocked | review | done
+review_outcome: <pending-or-result>
+summary: <one-line state>
+done: []
+in_progress: []
+remaining: []
+blockers: []
+last_verification: <command-or-check>
+next_step: <next action>
+updated_at: <ISO-8601>

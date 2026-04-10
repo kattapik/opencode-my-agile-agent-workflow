@@ -20,12 +20,12 @@ Planning is compression: make the next agent's job obvious without wasting conte
 - Capture only the facts that matter for execution.
 
 ## Default Moves
-- Use the compact bundle: proposal.md, goal.md, spec.md, task.md, important.md.
-- proposal = why, value, scope.
-- goal = outcome, constraints, default choice.
-- spec = contracts, flow, edge cases, risks.
+- Use the compact bundle: brief.md, spec.md, task.md, notes.md, status.yaml.
+- brief = why, outcome, scope, constraints, default choice.
+- spec = contract, data flow, edge cases, risks, acceptance criteria.
 - task = ordered checklist and dependencies.
-- important = facts, owners, links, blockers.
+- notes = facts, decisions, blockers, links.
+- status.yaml = live execution state.
 
 ## Anti-Patterns
 - Monolithic tasks, long prose, hidden assumptions, single-point estimates, and unresolved questions with no owner.

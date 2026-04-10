@@ -9,8 +9,6 @@ const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 const sourceOpencode = join(rootDir, '.opencode');
 const targetTemplates = join(rootDir, 'templates');
-const sourceTemplate = join(rootDir, 'AGENTS.template.md');
-const targetTemplate = join(targetTemplates, 'AGENTS.template.md');
 
 function skipNodeModules(path) {
   return !path.includes(`${sep}node_modules${sep}`) && !path.endsWith(`${sep}node_modules`);
@@ -38,8 +36,4 @@ cpSync(sourceOpencode, join(targetTemplates, '.opencode'), {
   filter: skipNodeModules,
 });
 
-if (existsSync(sourceTemplate)) {
-  cpSync(sourceTemplate, targetTemplate, { force: true });
-}
-
-console.log('Synced .opencode and AGENTS.template.md to templates/');
+console.log('Synced .opencode to templates/');

@@ -23,16 +23,22 @@
 
 ## Context Bundle
 
-- proposal.md: why, value, scope
-- goal.md: target outcome, constraints, default choice
-- spec.md: contract, data flow, edge cases, risks
+- brief.md: why, outcome, scope, constraints, default choice
+- spec.md: contract, data flow, edge cases, risks, acceptance criteria
 - task.md: ordered checklist, dependencies, owners
-- important.md: facts, blockers, links, decisions
+- notes.md: facts, decisions, blockers, links
+- status.yaml: live execution state
+
+- `status.yaml` is the live execution artifact; the markdown files stay as stable planning/reference context.
+- `status.yaml.status` allowed values: `active`, `blocked`, `review`, `done`.
 
 ## Archive
 
 - Archive completed bundles in `.opencode/archive/<feature-slug>/`.
 - Keep archive entries compact and aligned with the approved bundle.
+- Archive only when `status.yaml` is `done`.
+- Archive the full bundle: `brief.md`, `spec.md`, `task.md`, `notes.md`, and final `status.yaml`.
+- Finalize archive only from the main agent handling the request: `feature-lead` or `feature-loop`.
 
 ## Skill Design
 

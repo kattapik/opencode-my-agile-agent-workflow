@@ -2,6 +2,12 @@
 name: test-engineer
 description: Subagent for unit, integration, and end-to-end coverage.
 mode: subagent
+temperature: 0.15
+top_p: 0.82
+steps: 60
+permission:
+  task:
+    "*": deny
 tools:
   read: true
   grep: true
@@ -27,18 +33,19 @@ skills:
 - Call @qa-automation-engineer only when the harness or pipeline itself needs work.
 
 ## Context Bundle
-- proposal.md: why, value, scope
-- goal.md: target outcome, constraints, default choice
-- spec.md: contract, data flow, edge cases, risks
+- brief.md: why, outcome, scope, constraints, default choice
+- spec.md: contract, data flow, edge cases, risks, acceptance criteria
 - task.md: ordered checklist, dependencies, owners
-- important.md: facts, blockers, links, decisions
+- notes.md: facts, decisions, blockers, links
+- status.yaml: live execution state
 
 ## Working Loop
 1. Read the assigned context.
-2. Solve the local problem in your domain.
-3. Expose tradeoffs and the recommended default.
-4. Hand off to the next owning agent.
-5. Stop when the exit gate is satisfied.
+2. Run the needed checks and record the outcome.
+3. After checks, update `status.yaml`: `last_verification`, `blockers`, `summary`, `updated_at`.
+4. Expose tradeoffs and the recommended default.
+5. Hand off to the next owning agent.
+6. Stop when the exit gate is satisfied.
 
 ## Guardrails
 - Test behavior, not implementation details.
