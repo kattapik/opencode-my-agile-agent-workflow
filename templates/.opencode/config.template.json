@@ -19,29 +19,12 @@
       "permission": {
         "task": {
           "*": "allow",
-          "security-auditor": "ask",
-          "penetration-tester": "ask"
-        }
-      }
-    },
-    "feature-loop": {
-      "enabled": true,
-      "model": "primary",
-      "mode": "primary",
-      "temperature": 0.3,
-      "top_p": 0.92,
-      "steps": 100,
-      "permission": {
-        "task": {
-          "*": "allow",
-          "security-auditor": "ask",
-          "penetration-tester": "ask"
+          "security-auditor": "ask"
         }
       }
     },
     "system-analyst": {
       "enabled": true,
-      "model": "opencode-go/kimi-k2.5",
       "mode": "subagent",
       "temperature": 0.1,
       "top_p": 0.85,
@@ -59,9 +42,36 @@
         "bash": false
       }
     },
+    "context-gatherer": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.1,
+      "top_p": 0.8,
+      "steps": 20
+    },
+    "project-planner": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.2,
+      "top_p": 0.85,
+      "steps": 35
+    },
+    "explorer-agent": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.1,
+      "top_p": 0.75,
+      "steps": 25
+    },
+    "archiver": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.1,
+      "top_p": 0.82,
+      "steps": 30
+    },
     "developer": {
       "enabled": true,
-      "model": "github-copilot/gpt-5.1-codex-mini",
       "mode": "subagent",
       "temperature": 0.2,
       "top_p": 0.9,
@@ -79,9 +89,46 @@
         "bash": true
       }
     },
+    "backend-specialist": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.25,
+      "top_p": 0.9,
+      "steps": 80
+    },
+    "frontend-specialist": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.25,
+      "top_p": 0.9,
+      "steps": 70
+    },
+    "devops-engineer": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.2,
+      "top_p": 0.85,
+      "steps": 50
+    },
+    "test-engineer": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.15,
+      "top_p": 0.82,
+      "steps": 60,
+      "permission": {
+        "task": {
+          "*": "deny"
+        }
+      },
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    },
     "pr-reviewer": {
       "enabled": true,
-      "model": "github-copilot/claude-haiku-4.5",
       "mode": "subagent",
       "temperature": 0.1,
       "top_p": 0.8,
@@ -96,9 +143,57 @@
         "edit": false,
         "bash": false
       }
+    },
+    "security-auditor": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.1,
+      "top_p": 0.85,
+      "steps": 45
+    },
+    "debugger": {
+      "enabled": true,
+      "model": "primary",
+      "mode": "subagent",
+      "temperature": 0.15,
+      "top_p": 0.85,
+      "steps": 60,
+      "permission": {
+        "task": {
+          "*": "deny"
+        }
+      },
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    },
+    "performance-optimizer": {
+      "enabled": true,
+      "mode": "subagent",
+      "temperature": 0.2,
+      "top_p": 0.88,
+      "steps": 60,
+      "permission": {
+        "task": {
+          "*": "deny"
+        }
+      },
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
     }
   },
   "plugins": {
+    "sessionArtifacts": {
+      "enabled": true,
+      "candidateStage": "brainstorm",
+      "archiveCommand": "archive",
+      "handoffTool": "session_artifact_handoff"
+    },
     "lintFormat": {
       "enabled": true,
       "runOnEdit": true,
@@ -160,6 +255,7 @@
     "agents": ".opencode/agents",
     "skills": ".opencode/skills",
     "plugins": ".opencode/plugins",
+    "artifacts": ".opencode/artifacts",
     "templates": ".opencode/templates",
     "context": "context",
     "output": "output",

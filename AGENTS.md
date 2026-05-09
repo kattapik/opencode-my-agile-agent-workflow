@@ -1,53 +1,27 @@
-# AGENTS.md - opencode-agile-agent
-
-> Project-specific instructions for AI agents working in this repo.
-
----
+# Agent Instructions
 
 ## Purpose
 
-- This repo defines and maintains the reusable `.opencode` agile-agent kit.
-- Treat `AGENTS.md` as a normal repo file, not a generated artifact.
-- Keep installer and docs aligned with the actual kit behavior.
+- This project is an npm package for creating and running agents that can perform tasks on your behalf.
+- It is built on top of the Open Code client.
+- Treat it like a spec kit for agents: you can create new agents or reuse the ones already provided.
 
-## Primary Flow
+## Policy
 
-- Primary agent: `@feature-lead` or `@feature-loop` when the task needs iterative closure.
-- First call: `@context-gatherer` to map current state before planning or proof.
-- Use the compact context bundle:
-  - `brief.md`
-  - `spec.md`
-  - `task.md`
-  - `notes.md`
-  - `status.yaml`
-- `status.yaml` is the live execution source of truth.
+- Do not edit the `/.opencode` folder. It is reserved for local agent development only.
+- When updating the default agent templates, edit files in `/templates/.opencode` instead.
+- Keep agent instructions direct, concise, and action-oriented.
+- Preserve the existing structure unless a change is explicitly requested.
 
-## Archive Rule
+## Usage
 
-- Archive the full context bundle only when `status.yaml.status = done`.
-- Only the main agent finalizes and archives completed work.
+- Run the package with `npx opencode-agile-agent`.
+- To use it in another repository, install or run it there with the same command.
 
-## Repo-Specific Rules
+## Publish
 
-- Do not reintroduce generated `AGENTS.md` behavior.
-- Do not reintroduce `AGENTS.template.md`.
-- Keep `.opencode` reusable; keep `AGENTS.md` project-specific.
-- Remove dead workflow concepts instead of preserving compatibility with removed systems.
-- Prefer small, explicit updates over broad speculative rewrites.
-
-## Quality Bar
-
-- Keep prompts, commands, templates, and docs mutually consistent.
-- When changing workflow semantics, update the owning files in the same pass.
-- Call out dead code, dead docs, stale commands, and drifted instructions during implementation and review.
-
-## Useful Paths
-
-- `.opencode/README.md`
-- `.opencode/ARCHITECTURE.md`
-- `.opencode/agents/`
-- `.opencode/commands/`
-- `.opencode/templates/`
-- `bin/cli.js`
-- `bin/validate-templates.js`
-- `bin/sync-templates.js`
+- `npm version patch`
+- `git add .`
+- `git commit -m "update version"`
+- `git push origin main`
+- `npm publish --access public`

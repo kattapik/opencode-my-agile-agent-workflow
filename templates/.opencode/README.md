@@ -6,9 +6,37 @@ Spec-driven multi-agent system for OpenCode.
 
 ## Included
 
-- 25 agents
-- 14 skills
-- 10 commands
+- 15 agents
+- 15 skills
+- 11 commands
+- 1 runtime plugin
+
+## Plannotator (Optional)
+
+- This kit can integrate with Plannotator for browser-based plan review.
+- If your project has `opencode.json` with `"plugin": ["@plannotator/opencode@latest"]`, the `submit_plan` tool becomes available (by default for OpenCode's built-in `plan` agent).
+- The template `opencode.json` included with this repo configures Plannotator in `plan-agent` mode and allows `feature-lead` to call `submit_plan` during `/plan`.
+- Optional slash commands (installs globally):
+  - macOS/Linux/WSL: `curl -fsSL https://plannotator.ai/install.sh | bash`
+  - Windows PowerShell: `irm https://plannotator.ai/install.ps1 | iex`
+
+## Runtime Spine
+
+- `session-artifacts` keeps live feature state in `.opencode/artifacts/features/<feature-slug>/`.
+- `.opencode/artifacts/` is local runtime state and should stay out of git.
+- Agents should retrieve active state through artifact tools instead of carrying full bundle context.
+- Archive writes a concise summary record to `.opencode/archive/<feature-slug>.md`, and finalization runs through the artifact plugin.
+
+## Flow Shape
+
+- The default spine is `/brainstorm -> /plan -> /create -> /test -> /review -> /archive`.
+- The flow is not rigid. Commands can be reused mid-stream when the work needs them.
+- Common examples:
+  - Use `/brainstorm` again during implementation when a requirement turns ambiguous.
+  - Use `/plan` again when scope changes materially.
+  - Use `/test` before `/create` is fully done when a risky slice needs early proof.
+  - Use `/review` on an intermediate slice before the full feature is complete.
+  - Use `/archive` to preserve one finished slice even if the larger feature continues.
 
 ## Skill Design
 
@@ -19,25 +47,30 @@ Spec-driven multi-agent system for OpenCode.
 ## Context Skills
 
 - `context-gathering` maps the current project and active work.
-- `context-archive` stores completed bundles in `.opencode/archive/<feature-slug>/`.
+- `context-archive` stores completed work summaries in `.opencode/archive/<feature-slug>.md`.
+- `archive-writing` turns approved work into a compact archive note.
+- `cross-model-regression` coordinates multi-agent regression sweeps across different reviewer models.
+- `failure-learning` turns verified mistakes into reusable skills or rules when the lesson is worth keeping.
 - `security-gate` decides when a change needs a security gate or redteam phase.
 - `redteam-validation` simulates attacker behavior and proves exploitability.
-- `orchestrator` is optional; default routing stays with `feature-lead` and the owning specialists.
 
 ## Commands
 
 - Custom slash commands live in `.opencode/commands/`.
 - Each command file uses Markdown frontmatter plus a prompt body, matching OpenCode's command format.
-- The current command set is `brainstorm`, `create`, `debug`, `plan`, `progress`, `reframe`, `review`, `rubber-duck`, `status`, and `test`.
+- The current command set is `archive`, `assign-models`, `brainstorm`, `check-progress`, `create`, `plan`, `reframe`, `review`, `rubber-duck`, `status`, and `test`.
 
 ## Primary Flow
 
 1. @feature-lead receives the request.
-2. @context-gatherer maps the current project state.
-3. @project-planner and @system-analyst create the compact bundle: brief.md, spec.md, task.md, notes.md, and status.yaml.
-4. @developer implements the approved spec.
-5. @test-engineer, @security-auditor, @penetration-tester, and @pr-reviewer close the loop.
-6. @feature-lead archives the completed bundle.
+2. `session_artifact_current` restores the live feature state.
+3. @context-gatherer maps the current project state.
+4. @project-planner and @system-analyst create or refresh the compact bundle: brief.md, spec.md, task.md, notes.md, and status.yaml.
+5. @developer implements the approved spec from a canonical handoff packet.
+6. @test-engineer, @security-auditor, and @pr-reviewer close the loop.
+7. When a failure exposed a reusable lesson, ask whether to promote it into a skill or rule.
+8. If the session may compact before the final gate, @retrospective-writer captures a checkpoint.
+9. @archiver writes the completed work summary through the artifact plugin.
 
 ## Context Bundle
 
@@ -49,67 +82,76 @@ Spec-driven multi-agent system for OpenCode.
 - status.yaml: live execution state
 
 - `status.yaml` is the live execution artifact; the markdown files stay as stable planning/reference context.
-- `status.yaml.status` allowed values: `active`, `blocked`, `review`, `done`.
+- `status.yaml.status` allowed values: `brainstorm`, `planning`, `implementation`, `verification`, `review`, `done`, `blocked`.
 
 ## Archive
 
-- Completed bundles live in `.opencode/archive/<feature-slug>/`.
+- Completed work summaries live in `.opencode/archive/<feature-slug>.md`.
+- Live artifacts in `.opencode/artifacts/` should not be committed.
 - Keep the archive copy approved, compact, and read-only in practice.
 - Archive only when `status.yaml` is `done`.
-- Archive the full bundle: `brief.md`, `spec.md`, `task.md`, `notes.md`, and final `status.yaml`.
-- Only the main agent (`feature-lead` or `feature-loop`) should finalize the archive.
+- Archive the outcome, not the full live bundle.
+- Only the archive flow should finalize the archive summary.
 
 ## Agent Groups
 
-| Group | Agents |
-|-------|--------|
-| Context | `context-gatherer` |
-| Primary | `feature-lead` |
-| Coordination | `project-planner`, `explorer-agent` |
-| Advanced | `orchestrator` |
-| Product | `product-manager` |
-| Spec | `system-analyst`, `api-designer`, `database-architect` |
-| Build | `developer`, `frontend-specialist`, `backend-specialist`, `mobile-developer`, `game-developer`, `devops-engineer` |
-| Quality | `test-engineer`, `security-auditor`, `penetration-tester`, `performance-optimizer`, `debugger`, `pr-reviewer` |
-| Automation | `qa-automation-engineer` |
-| Output | `documentation-writer`, `seo-specialist` |
-| Maintenance | `code-archaeologist` |
+| Group        | Agents                                                                                                            |
+| ------------ | ----------------------------------------------------------------------------------------------------------------- |
+| Archive      | `archiver`                                                                                                        |
+| Context      | `context-gatherer`                                                                                                |
+| Primary      | `feature-lead`                                                                                                    |
+| Coordination | `project-planner`                                                                                                 |
+| Spec         | `system-analyst`                                                                                                  |
+| Build        | `developer`, `frontend-specialist`, `backend-specialist`, `devops-engineer`                                      |
+| Quality      | `test-engineer`, `security-auditor`, `performance-optimizer`, `debugger`, `pr-reviewer`                         |
+| Learning     | `retrospective-writer`                                                                                            |
 
 ## Command Catalog
 
-| Command | Use When |
-|---------|----------|
-| brainstorm | Explore options and clarify requirements before planning. |
-| create | Build new features, components, or project slices with a spec-driven flow. |
-| debug | Diagnose and fix bugs using a root-cause approach. |
-| plan | Create structured task breakdowns and spec artifacts. |
-| progress | Check current status, visible changes, remaining work, and the next best step. |
-| reframe | Reset the framing when the output is off-target, unclear, or stuck repeating the same mistake. |
-| review | Review code against the spec, standards, and quality gates. |
-| rubber-duck | Think out loud, challenge assumptions, and isolate the real problem before changing anything. |
-| status | Check project health, docs, and operating readiness. |
-| test | Run and generate tests for the codebase. |
+| Command        | Use When                                                                                       |
+| -------------- | ---------------------------------------------------------------------------------------------- |
+| archive        | Save an approved work summary into `.opencode/archive/<feature-slug>.md` for future reference. |
+| assign-models  | Map available models to each agent, confirm the routing, and update the active OpenCode config. |
+| brainstorm     | Explore options and clarify requirements before planning, or reopen ambiguity mid-flow.        |
+| check-progress | Check current status, visible changes, remaining work, and the next best step.                |
+| create         | Build new features, components, or project slices with a spec-driven flow.                    |
+| plan           | Create or refresh structured task breakdowns and spec artifacts.                              |
+| reframe        | Reset the framing when the output is off-target, unclear, or stuck repeating the same mistake. |
+| review         | Review code against the spec, standards, and quality gates at any meaningful checkpoint.      |
+| rubber-duck    | Think out loud, challenge assumptions, and isolate the real problem before changing anything. |
+| status         | Check project health, docs, and operating readiness.                                          |
+| test           | Run and generate tests for the codebase whenever proof is needed.                             |
 
 ## Skills
 
 - context-gathering
 - context-archive
+- archive-writing
+- cross-model-regression
+- artifact-discipline
 - clean-code
 - brainstorming
+- clarify-first
 - plan-writing
-- parallel-agents
 - intelligent-routing
 - frontend-design
 - api-patterns
+- session-closeout
 - testing-patterns
 - systematic-debugging
 - code-philosophy
 - security-gate
 - redteam-validation
+- failure-learning
+
+## Repo Delta Guard
+
+- `session_artifact_repo_delta` compares artifact-tracked files with actual git working tree changes.
+- Use it in `status`, `review`, and `archive` to catch drift before summaries or approval claims go stale.
 
 ## Routing Examples
 
-- Add JWT auth -> @feature-lead -> @system-analyst -> @backend-specialist + @security-auditor + @penetration-tester -> @test-engineer
+- Add JWT auth -> @feature-lead -> @system-analyst -> @backend-specialist + @security-auditor -> @test-engineer
 - Fix a UI bug -> @feature-lead -> @frontend-specialist -> @test-engineer -> @pr-reviewer
 - Ship a multi-domain feature -> @feature-lead -> @project-planner -> specialist agents -> @pr-reviewer
 

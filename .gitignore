@@ -10,5 +10,6 @@ templates/.opencode/
 .opencode/commands/
 .opencode/skills/context-archive/
 .opencode/skills/context-gathering/
-.opencode/skills/redteam-validation/
 .opencode/skills/security-gate/
+.opencode/
+graphify-out/
