@@ -1,0 +1,15 @@
+<article class="block span-12" data-block-id="{{block_id}}" data-type="sequence">
+  <h2>{{title}}</h2>
+  <p class="muted">Use for request/response order, async handoffs, retries, and failure branches.</p>
+  <div class="canvas" role="img" aria-label="Sequence diagram">
+    <svg viewBox="0 0 880 360">
+      <defs><marker id="seq-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--accent)"/></marker></defs>
+      <g fill="var(--card)" stroke="var(--line)" stroke-width="2"><rect x="70" y="35" width="130" height="42" rx="10"/><rect x="375" y="35" width="130" height="42" rx="10"/><rect x="680" y="35" width="130" height="42" rx="10"/></g>
+      <g stroke="var(--line)" stroke-dasharray="5 6"><path d="M135 77 V325"/><path d="M440 77 V325"/><path d="M745 77 V325"/></g>
+      <g fill="var(--ink)" text-anchor="middle" font-family="ui-sans-serif, system-ui" font-size="13"><text x="135" y="61">{{actor_a}}</text><text x="440" y="61">{{actor_b}}</text><text x="745" y="61">{{actor_c}}</text></g>
+      <g fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#seq-arrow)"><path d="M135 115 H435"/><path d="M440 170 H740"/><path d="M745 225 H445"/><path d="M440 280 H140"/></g>
+      <g fill="var(--muted)" font-family="ui-sans-serif, system-ui" font-size="12"><text x="220" y="106">{{message_1}}</text><text x="535" y="161">{{message_2}}</text><text x="540" y="216">{{message_3}}</text><text x="225" y="271">{{message_4}}</text></g>
+    </svg>
+  </div>
+  <details><summary>Artifact data block</summary><pre><code>{"id":"{{block_id}}","type":"sequence","data":{"participants":[],"messages":[],"branches":[]}}</code></pre></details>
+</article>

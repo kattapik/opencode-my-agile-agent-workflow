@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{artifact_title}}</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#f8fafc; --card:#fff; --ink:#0f172a; --muted:#64748b; --line:#dbe3ee; --accent:#2563eb; --ok:#16a34a; --warn:#d97706; --risk:#dc2626; --soft:#eef4ff; }
+    @media (prefers-color-scheme: dark) { :root { --bg:#0b1020; --card:#111827; --ink:#e5e7eb; --muted:#94a3b8; --line:#273449; --accent:#60a5fa; --soft:#101b31; } }
+    * { box-sizing:border-box; }
+    body { margin:0; font:14px/1.45 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; color:var(--ink); background:var(--bg); }
+    main { max-width:1120px; margin:0 auto; padding:24px; }
+    header, section, article { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px; margin:0 0 14px; box-shadow:0 1px 2px #0001; }
+    h1, h2, h3 { margin:0 0 10px; line-height:1.15; } h1 { font-size:28px; letter-spacing:-.03em; } h2 { font-size:17px; } h3 { font-size:14px; }
+    p { margin:0 0 10px; } ul, ol { margin:8px 0 0; padding-left:20px; } li { margin:4px 0; }
+    table { width:100%; border-collapse:collapse; font-size:13px; } th, td { border-top:1px solid var(--line); padding:9px; text-align:left; vertical-align:top; } th { color:var(--muted); font-weight:650; }
+    code { background:color-mix(in srgb, var(--line) 45%, transparent); border-radius:6px; padding:1px 5px; }
+    svg { width:100%; height:auto; max-height:520px; }
+    details { border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-top:8px; } summary { cursor:pointer; font-weight:650; }
+    .muted { color:var(--muted); } .ok { color:var(--ok); } .warn { color:var(--warn); } .risk { color:var(--risk); }
+    .pill { display:inline-flex; gap:6px; align-items:center; border:1px solid var(--line); border-radius:999px; padding:4px 9px; margin:3px 4px 3px 0; color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:14px; } .span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+    .block { position:relative; } .block::before { content:attr(data-type); position:absolute; top:12px; right:14px; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+    .callout { border-left:4px solid var(--accent); } .canvas { background:var(--soft); border:1px dashed var(--line); border-radius:14px; padding:14px; overflow:auto; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; } .card { border:1px solid var(--line); border-radius:14px; padding:12px; background:color-mix(in srgb, var(--card) 88%, var(--soft)); }
+    .flow { display:flex; gap:10px; flex-wrap:wrap; align-items:center; } .node { border:1px solid var(--line); border-radius:14px; padding:10px 12px; background:var(--card); } .edge { color:var(--accent); font-weight:800; }
+    .cols { columns:2 260px; column-gap:24px; }
+    @media (max-width:760px) { main { padding:12px; } .span-3,.span-4,.span-6,.span-8 { grid-column:span 12; } .block::before { position:static; display:block; margin-bottom:8px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="muted">{{feature_slug}} / {{stage}} / {{updated_at}}</p>
+      <h1>{{artifact_title}}</h1>
+      <p>{{one_sentence_model}}</p>
+      <div>
+        <span class="pill">Owner: {{owner}}</span>
+        <span class="pill">Next: {{next_step}}</span>
+        <span class="pill">Confidence: {{confidence}}</span>
+      </div>
+    </header>
+
+    <section class="callout">
+      <h2>How To Use This Artifact</h2>
+      <p>Use blocks, not a fixed document shape. Pick the smallest visual form that makes the mental model obvious. Every visible block should have a matching entry in <code>artifact-data.blocks</code> so AI agents can parse it without screen-reading the layout.</p>
+      <details>
+        <summary>Supported block types</summary>
+        <p><code>summary</code>, <code>table</code>, <code>flow</code>, <code>activity</code>, <code>swimlane</code>, <code>usecase</code>, <code>sequence</code>, <code>c4</code>, <code>erd</code>, <code>graph</code>, <code>matrix</code>, <code>timeline</code>, <code>kanban</code>, <code>metric</code>, <code>checklist</code>, <code>decision</code>, <code>risk</code>, <code>evidence</code>, <code>custom</code>.</p>
+        <p>Reusable diagram snippets live in <code>.opencode/templates/blocks/</code>. Copy one into <code>#artifact-blocks</code>, then add/update its JSON entry in <code>artifact-data.blocks[]</code>.</p>
+      </details>
+    </section>
+
+    <div class="grid" id="artifact-blocks">
+      <article class="block span-6 callout" data-block-id="model" data-type="summary">
+        <h2>Mental Model</h2>
+        <p>{{mental_model_summary}}</p>
+        <div class="flow" aria-label="Replace with the best shape for this artifact">
+          <span class="node">{{model_node_1}}</span><span class="edge">-&gt;</span>
+          <span class="node">{{model_node_2}}</span><span class="edge">-&gt;</span>
+          <span class="node">{{model_node_3}}</span>
+        </div>
+      </article>
+
+      <article class="block span-6" data-block-id="decision" data-type="decision">
+        <h2>Default Decision</h2>
+        <p>{{default_choice}}</p>
+        <table>
+          <thead><tr><th>Option</th><th>Why</th><th>Tradeoff</th></tr></thead>
+          <tbody>{{decision_rows}}</tbody>
+        </table>
+      </article>
+
+      <article class="block span-12" data-block-id="primary-table" data-type="table">
+        <h2>{{table_title}}</h2>
+        <table>
+          <thead>{{table_head}}</thead>
+          <tbody>{{table_body}}</tbody>
+        </table>
+      </article>
+
+      <article class="block span-12" data-block-id="visual-canvas" data-type="custom">
+        <h2>{{visual_title}}</h2>
+        <div class="canvas">
+          <!-- Replace this with inline SVG, Mermaid-like text, ERD cards, dependency graph, chart bars, or any other compact visual. -->
+          {{visual_markup}}
+        </div>
+        <details>
+          <summary>Agent-readable visual source</summary>
+          <pre><code>{{visual_source}}</code></pre>
+        </details>
+      </article>
+
+      <article class="block span-6" data-block-id="tasks" data-type="checklist">
+        <h2>Tasks / Exit Signals</h2>
+        <ol>{{task_items}}</ol>
+      </article>
+
+      <article class="block span-6" data-block-id="risks" data-type="risk">
+        <h2>Risks / Questions</h2>
+        <div class="cards">{{risk_cards}}</div>
+      </article>
+    </div>
+  </main>
+
+  <script id="artifact-data" type="application/json">
+  {
+    "schema": "opencode-agile-artifact/v2",
+    "feature_slug": "{{feature_slug}}",
+    "artifact": "{{artifact_name}}",
+    "stage": "{{stage}}",
+    "owner": "{{owner}}",
+    "updated_at": "{{updated_at}}",
+    "source_inputs": {{input_data_json}},
+    "blocks": [
+      {
+        "id": "model",
+        "type": "summary",
+        "title": "Mental Model",
+        "purpose": "Align humans and agents on the core shape of the problem.",
+        "data": { "summary": "{{mental_model_summary}}", "nodes": ["{{model_node_1}}", "{{model_node_2}}", "{{model_node_3}}"] }
+      },
+      {
+        "id": "primary-table",
+        "type": "table",
+        "title": "{{table_title}}",
+        "data": { "columns": [], "rows": [] }
+      },
+      {
+        "id": "visual-canvas",
+        "type": "custom",
+        "title": "{{visual_title}}",
+        "data": { "format": "svg|erd|graph|timeline|matrix|freeform", "source": "{{visual_source}}" }
+      }
+    ]
+  }
+  </script>
+</body>
+</html>

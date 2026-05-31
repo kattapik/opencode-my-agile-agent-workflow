@@ -1,0 +1,16 @@
+<article class="block span-12" data-block-id="{{block_id}}" data-type="swimlane">
+  <h2>{{title}}</h2>
+  <p class="muted">Use when ownership across actors, agents, services, or teams matters.</p>
+  <div class="canvas">
+    <table>
+      <thead><tr><th>{{lane_1}}</th><th>{{lane_2}}</th><th>{{lane_3}}</th></tr></thead>
+      <tbody>
+        <tr><td>{{lane_1_step_1}}</td><td></td><td></td></tr>
+        <tr><td></td><td>{{lane_2_step_1}}</td><td></td></tr>
+        <tr><td></td><td></td><td>{{lane_3_step_1}}</td></tr>
+        <tr><td>{{lane_1_step_2}}</td><td>{{lane_2_step_2}}</td><td>{{lane_3_step_2}}</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <details><summary>Artifact data block</summary><pre><code>{"id":"{{block_id}}","type":"swimlane","data":{"lanes":[],"steps":[],"handoffs":[]}}</code></pre></details>
+</article>

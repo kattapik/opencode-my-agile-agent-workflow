@@ -1,0 +1,16 @@
+<article class="block span-12" data-block-id="{{block_id}}" data-type="usecase">
+  <h2>{{title}}</h2>
+  <p class="muted">Use for actors, goals, system boundary, and included/extended use cases.</p>
+  <div class="canvas" role="img" aria-label="Use case diagram">
+    <svg viewBox="0 0 820 360">
+      <rect x="250" y="40" width="430" height="270" rx="18" fill="none" stroke="var(--line)" stroke-width="2"/>
+      <text x="465" y="68" fill="var(--muted)" text-anchor="middle" font-family="ui-sans-serif, system-ui" font-size="13">{{system_name}}</text>
+      <g fill="none" stroke="var(--ink)" stroke-width="2"><circle cx="95" cy="105" r="18"/><path d="M95 123 V180 M60 145 H130 M95 180 L65 230 M95 180 L125 230"/></g>
+      <text x="95" y="260" fill="var(--ink)" text-anchor="middle" font-family="ui-sans-serif, system-ui" font-size="13">{{actor_1}}</text>
+      <g fill="var(--card)" stroke="var(--accent)" stroke-width="2"><ellipse cx="420" cy="120" rx="115" ry="34"/><ellipse cx="500" cy="205" rx="115" ry="34"/></g>
+      <g fill="var(--ink)" text-anchor="middle" font-family="ui-sans-serif, system-ui" font-size="13"><text x="420" y="124">{{usecase_1}}</text><text x="500" y="209">{{usecase_2}}</text></g>
+      <g stroke="var(--line)" stroke-width="2"><path d="M140 145 L305 120"/><path d="M140 145 L385 205"/></g>
+    </svg>
+  </div>
+  <details><summary>Artifact data block</summary><pre><code>{"id":"{{block_id}}","type":"usecase","data":{"actors":[],"system":"","usecases":[],"relations":[]}}</code></pre></details>
+</article>

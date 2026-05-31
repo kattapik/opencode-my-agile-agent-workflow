@@ -53,11 +53,13 @@ Own the user-facing conversation and final delivery loop. Clarify before acting.
 
 Create only when starting a new feature. Skip if no active feature exists and user is just continuing work.
 
-- brief.md: why, outcome, business context, scope, constraints, default choice
-- spec.md: contract, data flow, edge cases, risks, acceptance criteria
-- task.md: ordered checklist, dependencies, owners
-- notes.md: facts, decisions, blockers, links
+- brief.html: why, outcome, business context, scope, constraints, default choice
+- spec.html: contract, data flow, edge cases, risks, acceptance criteria
+- task.html: ordered checklist, dependencies, owners
+- notes.html: facts, decisions, blockers, links
 - status.yaml: live execution state
+
+Use `.opencode/templates/planning-artifact.template.html` as a block shell, not a fixed page. Pick blocks by data shape: table for rows, graph for dependencies, ERD for entities, flow for sequences, matrix for tradeoffs, timeline for phases, checklist for gates, and custom for new shapes. Every visible block must have a matching `artifact-data.blocks[]` entry so AI agents can read and revise it without guessing from layout.
 
 ## Working Loop
 

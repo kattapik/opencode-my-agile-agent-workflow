@@ -37,7 +37,7 @@ Implement only what the spec asks for. Keep code clear, typed, maintainable.
 
 ## Working Loop
 1. Start from `session_artifact_handoff` for `developer`.
-2. Pull `session_artifact_acceptance_criteria` or `session_artifact_section` when you only need one slice of the bundle.
+2. Pull `session_artifact_data` for machine-readable block data, or `session_artifact_acceptance_criteria` / `session_artifact_section` when you only need one slice of the bundle.
 3. Implement. Update runtime state with `session_artifact_update` when changed files, risks, or next step changed materially.
 4. Check for dead code, stale imports, obsolete branches.
 5. Expose tradeoffs with recommended default.

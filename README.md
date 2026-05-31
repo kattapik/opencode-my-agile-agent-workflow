@@ -13,7 +13,7 @@ Scaffold the OpenCode spec-driven agent kit into any project with one confirmati
 1. Run `npx opencode-agile-agent` inside the repo you want to set up.
 2. Ask the main agent to clarify the project direction first.
 3. Use `/brainstorm` if the idea is still fuzzy.
-4. Use `/plan` once the scope is clear enough to turn into `brief.md`, `spec.md`, `task.md`, `notes.md`, and `status.yaml`.
+4. Use `/plan` once the scope is clear enough to turn into `brief.html`, `spec.html`, `task.html`, `notes.html`, and `status.yaml`.
 5. Use `/create` when you want the first implementation pass to begin.
 6. Use `/test` and `/review` before considering the first slice done.
 7. Use `/archive` when the finished slice is approved and worth preserving as a summary.
@@ -69,7 +69,7 @@ Example:
 
 ## Plannotator Integration
 
-- The template includes `templates/opencode.json` with `@plannotator/opencode@latest` configured.
+- The template includes `templates/opencode.json` with the local `session-artifacts` plugin and `@plannotator/opencode@latest` configured.
 - With Plannotator enabled, `/plan` will use `submit_plan` (when available) to open a browser UI for plan approval and feedback.
 
 ## Custom Commands
@@ -84,7 +84,9 @@ Example:
 - `retrospective-writer` captures reusable lessons from real failures and asks whether they should become a skill or rule.
 - `archiver` is a dedicated archive-summary agent, not just a final step bolted onto the lead.
 - `session_artifact_repo_delta` guards summaries and reviews against drift from the real git state.
-- The compact planning bundle is brief.md, spec.md, task.md, notes.md, and status.yaml.
+- The compact planning bundle is `brief.html`, `spec.html`, `task.html`, `notes.html`, and `status.yaml`.
+- HTML planning artifacts use a shared low-token block template with inline CSS, optional SVG, compact tables, graph/ERD/matrix/timeline/custom blocks, collapsible details, and `<script id="artifact-data" type="application/json">` for AI-readable structured input data.
+- Reusable interactive block templates are included for all supported block types, including activity, swimlane, use case, sequence, C4-style architecture, ERD, graph, matrix, timeline, kanban, metric, evidence, and custom diagrams.
 - `@feature-lead` is the primary entry point; the rest are subagents.
 - `.opencode/artifacts/` is local runtime state and is git-ignored by the installed template.
 - Completed work summaries are archived in `.opencode/archive/<feature-slug>.md`.
@@ -103,7 +105,7 @@ Example:
 - `@feature-lead` is the primary entry point.
 - `session_artifact_current` restores active feature state before deeper work.
 - `@context-gatherer` maps the current project before any planning or proof.
-- `@project-planner` and `@system-analyst` build `brief.md`, `spec.md`, `task.md`, `notes.md`, and `status.yaml`.
+- `@project-planner` and `@system-analyst` build `brief.html`, `spec.html`, `task.html`, `notes.html`, and `status.yaml` from `.opencode/templates/planning-artifact.template.html`.
 - `@developer` implements the approved spec.
 - `@test-engineer`, `@retrospective-writer`, `@security-auditor`, and `@pr-reviewer` close the loop.
 - When a resolved failure exposes a durable lesson, ask whether to promote it into a reusable skill or rule.

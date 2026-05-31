@@ -11,7 +11,7 @@
 2. @feature-lead **clarifies first** — iterates questions until scope, intent, and business value are clear. If user has no idea, offers default + trade-offs.
 3. `session_artifact_current` restores active feature state.
 4. @context-gatherer maps current project and active work.
-5. If new feature: create context bundle + status.yaml. If continuing: refresh the active artifact.
+5. If new feature: create HTML context bundle + status.yaml. If continuing: refresh the active artifact.
 6. Discovery and planning produce the compact context bundle.
 7. Build agents implement the approved spec from canonical handoff packets.
 8. Quality agents review, test, and harden.
@@ -25,11 +25,15 @@
 
 ## Context Bundle
 Create only for new features. Skip if no active feature and user is continuing work.
-- brief.md: why, outcome, business context, scope, constraints, default choice
-- spec.md: contract, data flow, edge cases, risks, acceptance criteria
-- task.md: ordered checklist, dependencies, owners
-- notes.md: facts, decisions, blockers, links
+- brief.html: why, outcome, business context, scope, constraints, default choice
+- spec.html: contract, data flow, edge cases, risks, acceptance criteria
+- task.html: ordered checklist, dependencies, owners
+- notes.html: facts, decisions, blockers, links
 - status.yaml: live execution state
+
+Start from `.opencode/templates/planning-artifact.template.html`. Treat it as a block shell: use tables for rows, graph blocks for dependencies, ERD blocks for entities, flow blocks for sequences, matrix blocks for tradeoffs, timeline blocks for phases, and custom blocks for forms not yet anticipated. Each visible block must have canonical data in `<script id="artifact-data" type="application/json">` for AI-readable updates.
+
+Reusable diagram blocks live in `.opencode/templates/blocks/` for activity, swimlane, use case, sequence, and C4 diagrams. Use them when the planning artifact needs a shared mental model instead of prose.
 
 `status.yaml.status` allowed: `brainstorm`, `planning`, `implementation`, `verification`, `review`, `done`, `blocked`.
 

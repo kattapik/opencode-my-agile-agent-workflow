@@ -34,7 +34,7 @@ Translate request into compact spec bundle. Keep artifacts short, clear, impleme
 
 ## Working Loop
 1. Start from `session_artifact_handoff` for `system-analyst`.
-2. Pull `session_artifact_section` when only one planning artifact needs revision.
+2. Pull `session_artifact_data` when updating structured blocks, or `session_artifact_section` when only one planning artifact needs prose revision.
 3. Produce compact bundle. Update runtime state with `session_artifact_update` when revised.
 4. Expose tradeoffs with recommended default.
 5. Hand off to next agent.

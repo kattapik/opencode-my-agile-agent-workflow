@@ -14,7 +14,7 @@ Spec-driven multi-agent system for OpenCode.
 ## Plannotator (Optional)
 
 - This kit can integrate with Plannotator for browser-based plan review.
-- If your project has `opencode.json` with `"plugin": ["@plannotator/opencode@latest"]`, the `submit_plan` tool becomes available (by default for OpenCode's built-in `plan` agent).
+- If your project has `opencode.json` with the local `session-artifacts` plugin and `@plannotator/opencode@latest`, artifact tools and `submit_plan` become available.
 - The template `opencode.json` included with this repo configures Plannotator in `plan-agent` mode and allows `feature-lead` to call `submit_plan` during `/plan`.
 - Optional slash commands (installs globally):
   - macOS/Linux/WSL: `curl -fsSL https://plannotator.ai/install.sh | bash`
@@ -65,7 +65,7 @@ Spec-driven multi-agent system for OpenCode.
 1. @feature-lead receives the request.
 2. `session_artifact_current` restores the live feature state.
 3. @context-gatherer maps the current project state.
-4. @project-planner and @system-analyst create or refresh the compact bundle: brief.md, spec.md, task.md, notes.md, and status.yaml.
+4. @project-planner and @system-analyst create or refresh the compact bundle: brief.html, spec.html, task.html, notes.html, and status.yaml.
 5. @developer implements the approved spec from a canonical handoff packet.
 6. @test-engineer, @security-auditor, and @pr-reviewer close the loop.
 7. When a failure exposed a reusable lesson, ask whether to promote it into a skill or rule.
@@ -75,13 +75,18 @@ Spec-driven multi-agent system for OpenCode.
 ## Context Bundle
 
 - Templates live in `.opencode/templates/` for quick bundle creation.
-- brief.md: why, outcome, scope, constraints, default choice
-- spec.md: contract, data flow, edge cases, risks, acceptance criteria
-- task.md: ordered checklist, dependencies, owners
-- notes.md: facts, decisions, blockers, links
+- brief.html: why, outcome, scope, constraints, default choice
+- spec.html: contract, data flow, edge cases, risks, acceptance criteria
+- task.html: ordered checklist, dependencies, owners
+- notes.html: facts, decisions, blockers, links
 - status.yaml: live execution state
 
-- `status.yaml` is the live execution artifact; the markdown files stay as stable planning/reference context.
+- `status.yaml` is the live execution artifact; the HTML files stay as stable planning/reference context.
+- Start from `.opencode/templates/planning-artifact.template.html` instead of a blank page.
+- Treat planning HTML as a block system, not a fixed layout. Blocks may be `summary`, `table`, `flow`, `erd`, `graph`, `matrix`, `timeline`, `kanban`, `metric`, `checklist`, `decision`, `risk`, `evidence`, or `custom`.
+- Keep planning HTML low-token: short text blocks, CSS-only layout, inline SVG when useful, tables for structured data, and `details` for context that is useful but not always visible.
+- Put machine-readable input and every block's canonical data in `<script id="artifact-data" type="application/json">` so agents can update structure without rewriting long prose.
+- Reusable blocks live in `.opencode/templates/blocks/` for all supported block types, including activity, swimlane, usecase, sequence, C4, ERD, graph, matrix, timeline, kanban, metric, evidence, and custom.
 - `status.yaml.status` allowed values: `brainstorm`, `planning`, `implementation`, `verification`, `review`, `done`, `blocked`.
 
 ## Archive
@@ -147,6 +152,7 @@ Spec-driven multi-agent system for OpenCode.
 ## Repo Delta Guard
 
 - `session_artifact_repo_delta` compares artifact-tracked files with actual git working tree changes.
+- `session_artifact_data` reads the canonical JSON block data from an HTML artifact so agents can revise tables, graphs, ERDs, and custom visuals without parsing layout.
 - Use it in `status`, `review`, and `archive` to catch drift before summaries or approval claims go stale.
 
 ## Routing Examples

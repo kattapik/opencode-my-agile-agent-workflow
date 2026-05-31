@@ -1,0 +1,12 @@
+<article class="block span-12" data-block-id="{{block_id}}" data-type="graph">
+  <h2>{{title}}</h2>
+  <div class="canvas" role="img" aria-label="Graph diagram">
+    <svg viewBox="0 0 760 260">
+      <defs><marker id="graph-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--accent)"/></marker></defs>
+      <g fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#graph-arrow)"><path d="M180 90 L330 130"/><path d="M430 130 L580 90"/><path d="M180 170 L330 130"/><path d="M430 130 L580 170"/></g>
+      <g fill="var(--card)" stroke="var(--line)" stroke-width="2"><circle cx="140" cy="90" r="48"/><circle cx="380" cy="130" r="54"/><circle cx="620" cy="90" r="48"/><circle cx="140" cy="170" r="44"/><circle cx="620" cy="170" r="44"/></g>
+      <g fill="var(--ink)" font-family="ui-sans-serif, system-ui" font-size="13" text-anchor="middle"><text x="140" y="94">{{node_1}}</text><text x="380" y="134">{{node_2}}</text><text x="620" y="94">{{node_3}}</text><text x="140" y="174">{{node_4}}</text><text x="620" y="174">{{node_5}}</text></g>
+    </svg>
+  </div>
+  <details><summary>Artifact data block</summary><pre><code>{"id":"{{block_id}}","type":"graph","data":{"nodes":[],"edges":[]}}</code></pre></details>
+</article>
