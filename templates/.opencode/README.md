@@ -87,6 +87,7 @@ Spec-driven multi-agent system for OpenCode.
 - Keep planning HTML low-token: short text blocks, CSS-only layout, inline SVG when useful, tables for structured data, and `details` for context that is useful but not always visible.
 - Put machine-readable input and every block's canonical data in `<script id="artifact-data" type="application/json">` so agents can update structure without rewriting long prose.
 - Reusable blocks live in `.opencode/templates/blocks/` for all supported block types, including activity, swimlane, usecase, sequence, C4, ERD, graph, matrix, timeline, kanban, metric, evidence, and custom.
+- The default installed skill set is intentionally small. Keep broad domain skills out of `.opencode/skills` unless the project needs them daily.
 - `status.yaml.status` allowed values: `brainstorm`, `planning`, `implementation`, `verification`, `review`, `done`, `blocked`.
 
 ## Archive

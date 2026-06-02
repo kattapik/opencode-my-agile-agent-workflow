@@ -87,6 +87,7 @@ Example:
 - The compact planning bundle is `brief.html`, `spec.html`, `task.html`, `notes.html`, and `status.yaml`.
 - HTML planning artifacts use a shared low-token block template with inline CSS, optional SVG, compact tables, graph/ERD/matrix/timeline/custom blocks, collapsible details, and `<script id="artifact-data" type="application/json">` for AI-readable structured input data.
 - Reusable interactive block templates are included for all supported block types, including activity, swimlane, use case, sequence, C4-style architecture, ERD, graph, matrix, timeline, kanban, metric, evidence, and custom diagrams.
+- The npm package only ships core workflow skills by default to avoid bloating agent context; larger domain skills are intentionally kept out of the default publish surface.
 - `@feature-lead` is the primary entry point; the rest are subagents.
 - `.opencode/artifacts/` is local runtime state and is git-ignored by the installed template.
 - Completed work summaries are archived in `.opencode/archive/<feature-slug>.md`.

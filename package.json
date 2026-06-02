@@ -1,6 +1,6 @@
 {
   "name": "opencode-agile-agent",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "AI Agile Spec-Driven Development - Install .opencode agile agent system into any project",
   "keywords": [
     "ai",
@@ -17,13 +17,40 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "opencode-agile-agent": "./bin/cli.js",
-    "create-opencode-agile": "./bin/cli.js"
+    "opencode-agile-agent": "bin/cli.js",
+    "create-opencode-agile": "bin/cli.js"
   },
   "main": "./bin/cli.js",
   "files": [
     "bin",
-    "templates",
+    "templates/opencode.json",
+    "templates/.opencode/.gitignore",
+    "templates/.opencode/ARCHITECTURE.md",
+    "templates/.opencode/README.md",
+    "templates/.opencode/archive/README.md",
+    "templates/.opencode/artifacts/README.md",
+    "templates/.opencode/config.template.json",
+    "templates/.opencode/package.json",
+    "templates/.opencode/plugins",
+    "templates/.opencode/agents",
+    "templates/.opencode/commands",
+    "templates/.opencode/rules",
+    "templates/.opencode/templates",
+    "templates/.opencode/skills/api-patterns",
+    "templates/.opencode/skills/archive-writing",
+    "templates/.opencode/skills/artifact-discipline",
+    "templates/.opencode/skills/brainstorming",
+    "templates/.opencode/skills/clarify-first",
+    "templates/.opencode/skills/clean-code",
+    "templates/.opencode/skills/code-philosophy",
+    "templates/.opencode/skills/context-archive",
+    "templates/.opencode/skills/context-gathering",
+    "templates/.opencode/skills/frontend-design",
+    "templates/.opencode/skills/intelligent-routing",
+    "templates/.opencode/skills/plan-writing",
+    "templates/.opencode/skills/security-gate",
+    "templates/.opencode/skills/systematic-debugging",
+    "templates/.opencode/skills/testing-patterns",
     "README.md"
   ],
   "engines": {
@@ -44,9 +71,6 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": ""
-  },
-  "bugs": {
     "url": ""
   },
   "homepage": ""

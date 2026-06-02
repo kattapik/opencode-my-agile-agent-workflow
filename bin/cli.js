@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { fileURLToPath } from 'url';
-import { dirname, extname, join, sep } from 'path';
+import { dirname, extname, join } from 'path';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { createInterface } from 'readline';
 
@@ -10,6 +10,21 @@ const __dirname = dirname(__filename);
 const packageRoot = join(__dirname, '..');
 const projectRoot = process.cwd();
 const templatesDir = join(packageRoot, 'templates');
+
+const requiredOpencodeFiles = [
+  {
+    path: ['.gitignore'],
+    content: '/artifacts/\n/archive/\n',
+  },
+  {
+    path: ['artifacts', 'README.md'],
+    content: `# Artifacts\n\nLive feature state lives here.\n\nDo not commit this directory. The template ships a .opencode/.gitignore rule for /artifacts/ because this folder is session-local runtime state.\n`,
+  },
+  {
+    path: ['archive', 'README.md'],
+    content: `# Archive\n\nThis directory stores compact, durable summaries of finished work.\n\nArchive entries are summary-only: outcome, key changes, verification signal, and any follow-up.\n`,
+  },
+];
 
 const colors = {
   reset: '\x1b[0m',
@@ -65,8 +80,8 @@ Commands:
   process.exit(0);
 }
 
-function shouldCopyPath(path) {
-  return !path.includes(`${sep}node_modules${sep}`) && !path.endsWith(`${sep}node_modules`);
+function shouldCopyEntry(entry) {
+  return entry.name !== 'node_modules';
 }
 
 function isAppendableTextFile(path) {
@@ -147,7 +162,7 @@ function mergeDirectory(sourceDir, targetDir, stats) {
     const sourcePath = join(sourceDir, entry.name);
     const targetPath = join(targetDir, entry.name);
 
-    if (!shouldCopyPath(sourcePath)) {
+    if (!shouldCopyEntry(entry)) {
       continue;
     }
 
@@ -226,6 +241,20 @@ function mergeProjectConfig(templatesDir, projectRoot, stats) {
   }
 }
 
+function ensureRequiredOpencodeFiles(targetDir, stats) {
+  for (const required of requiredOpencodeFiles) {
+    const targetPath = join(targetDir, ...required.path);
+    const parent = dirname(targetPath);
+    if (!existsSync(parent)) {
+      mkdirSync(parent, { recursive: true });
+    }
+    if (!existsSync(targetPath)) {
+      writeFileSync(targetPath, required.content);
+      stats.created += 1;
+    }
+  }
+}
+
 async function install() {
   console.log(banner);
   log.title('OpenCode Agile Agent Installer');
@@ -253,6 +282,7 @@ async function install() {
 
   const stats = { created: 0, appended: 0, skipped: 0 };
   mergeDirectory(source, target, stats);
+  ensureRequiredOpencodeFiles(target, stats);
   mergeProjectConfig(templatesDir, projectRoot, stats);
 
   log.success('Installed .opencode in merge mode.');
