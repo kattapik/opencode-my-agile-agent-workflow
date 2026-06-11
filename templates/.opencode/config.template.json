@@ -187,33 +187,7 @@
       }
     }
   },
-  "plugins": {
-    "sessionArtifacts": {
-      "enabled": true,
-      "candidateStage": "brainstorm",
-      "archiveCommand": "archive",
-      "handoffTool": "session_artifact_handoff"
-    },
-    "lintFormat": {
-      "enabled": true,
-      "runOnEdit": true,
-      "extensions": [".ts", ".tsx", ".js", ".jsx", ".vue", ".scss", ".css"],
-      "commands": {
-        "format": "npm run format",
-        "lint": "npm run lint"
-      }
-    },
-    "validateStandards": {
-      "enabled": true,
-      "strictMode": true,
-      "checkOnSave": true
-    },
-    "validateTypescript": {
-      "enabled": true,
-      "strictMode": true,
-      "checkOnSave": true
-    }
-  },
+
   "verification": {
     "commands": {
       "typeCheck": "npx tsc --noEmit",
@@ -254,7 +228,6 @@
   "paths": {
     "agents": ".opencode/agents",
     "skills": ".opencode/skills",
-    "plugins": ".opencode/plugins",
     "artifacts": ".opencode/artifacts",
     "templates": ".opencode/templates",
     "context": "context",

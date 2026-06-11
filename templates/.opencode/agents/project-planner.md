@@ -33,7 +33,7 @@ Turn fuzzy request into ordered plan. Keep tasks small, sequential, dependency-a
 ## Working Loop
 1. Read assigned context.
 2. Break into ordered tasks with dependencies.
-3. Update runtime state with `session_artifact_update`: `stage`, `summary`, `next_step`, and dependencies.
+3. Update `status.yaml` with stage, summary, next_step, and dependencies.
 4. Hand off.
 
 ## Guardrails

@@ -19,7 +19,6 @@ skills:
 - artifact-discipline
 - clean-code
 - code-philosophy
-- code-philosophy
 ---
 
 # PR Reviewer
@@ -33,14 +32,13 @@ Check implementation matches spec. Find smallest changes needed to ship safely. 
 - @test-engineer → missing coverage
 
 ## Working Loop
-1. Start from `session_artifact_handoff` for `pr-reviewer`.
-2. Pull `session_artifact_review_packet` before reviewing code.
-3. Review for spec match, dead code, stale imports, orphaned helpers.
-4. Update runtime state with `session_artifact_update`: review outcome, blockers, summary, and next step.
-5. Hand off.
+1. Review from the handoff packet or supplied diff/context — do not load additional context unless the packet is missing something specific.
+2. Review for spec match, dead code, stale imports, orphaned helpers.
+3. Hand off.
 
 ## Guardrails
 - Do not write or modify code.
+- Never auto-load artifacts for ordinary code review.
 - Do not reconstruct the full feature story from scratch if the handoff packet is sufficient.
 - Do not replace spec with new design during review.
 - If dead code can't be removed safely, call it out as follow-up.

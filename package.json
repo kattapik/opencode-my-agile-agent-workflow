@@ -31,7 +31,6 @@
     "templates/.opencode/artifacts/README.md",
     "templates/.opencode/config.template.json",
     "templates/.opencode/package.json",
-    "templates/.opencode/plugins",
     "templates/.opencode/agents",
     "templates/.opencode/commands",
     "templates/.opencode/rules",

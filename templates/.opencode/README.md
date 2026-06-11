@@ -9,23 +9,13 @@ Spec-driven multi-agent system for OpenCode.
 - 15 agents
 - 15 skills
 - 11 commands
-- 1 runtime plugin
-
-## Plannotator (Optional)
-
-- This kit can integrate with Plannotator for browser-based plan review.
-- If your project has `opencode.json` with the local `session-artifacts` plugin and `@plannotator/opencode@latest`, artifact tools and `submit_plan` become available.
-- The template `opencode.json` included with this repo configures Plannotator in `plan-agent` mode and allows `feature-lead` to call `submit_plan` during `/plan`.
-- Optional slash commands (installs globally):
-  - macOS/Linux/WSL: `curl -fsSL https://plannotator.ai/install.sh | bash`
-  - Windows PowerShell: `irm https://plannotator.ai/install.ps1 | iex`
 
 ## Runtime Spine
 
-- `session-artifacts` keeps live feature state in `.opencode/artifacts/features/<feature-slug>/`.
+- Active feature state lives in `.opencode/artifacts/features/<feature-slug>/`.
 - `.opencode/artifacts/` is local runtime state and should stay out of git.
-- Agents should retrieve active state through artifact tools instead of carrying full bundle context.
-- Archive writes a concise summary record to `.opencode/archive/<feature-slug>.md`, and finalization runs through the artifact plugin.
+- Agents should retrieve active state through `status.yaml` instead of carrying full bundle context.
+- Archive writes a concise summary record to `.opencode/archive/<feature-slug>.md`.
 
 ## Flow Shape
 
@@ -70,7 +60,7 @@ Spec-driven multi-agent system for OpenCode.
 6. @test-engineer, @security-auditor, and @pr-reviewer close the loop.
 7. When a failure exposed a reusable lesson, ask whether to promote it into a skill or rule.
 8. If the session may compact before the final gate, @retrospective-writer captures a checkpoint.
-9. @archiver writes the completed work summary through the artifact plugin.
+9. @archiver writes the completed work summary.
 
 ## Context Bundle
 
@@ -152,9 +142,7 @@ Spec-driven multi-agent system for OpenCode.
 
 ## Repo Delta Guard
 
-- `session_artifact_repo_delta` compares artifact-tracked files with actual git working tree changes.
-- `session_artifact_data` reads the canonical JSON block data from an HTML artifact so agents can revise tables, graphs, ERDs, and custom visuals without parsing layout.
-- Use it in `status`, `review`, and `archive` to catch drift before summaries or approval claims go stale.
+- Run `git status` in `status`, `review`, and `archive` commands to catch drift before summaries or approval claims go stale.
 
 ## Routing Examples
 

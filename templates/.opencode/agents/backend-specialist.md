@@ -35,7 +35,7 @@ Build explicit APIs and service logic. Validate inputs, keep contracts predictab
 ## Working Loop
 1. Read assigned context.
 2. Implement backend logic.
-3. Update runtime state with `session_artifact_update`: `summary`, `next_step`, and any changed backend risks.
+3. Update `status.yaml` with summary, next_step, and any changed backend risks.
 4. Hand off.
 
 ## Guardrails

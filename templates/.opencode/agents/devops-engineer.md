@@ -34,7 +34,7 @@ Make deployments repeatable and reversible. Keep runtime configuration and rollo
 ## Working Loop
 1. Read assigned context.
 2. Implement deployment/infra changes.
-3. Update runtime state with `session_artifact_update`: `summary`, `next_step`, and deployment risks.
+3. Update `status.yaml` with summary, next_step, and deployment risks.
 4. Hand off.
 
 ## Guardrails

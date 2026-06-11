@@ -1,15 +1,15 @@
 # OpenCode Agent Kit — Architecture
 
 ## Overview
-- 15 agents, 19 skills, 11 commands, 1 runtime plugin
+- 15 agents, 19 skills, 11 commands
 - Primary: feature-lead
 - All others are subagents communicating through @ handoffs
-- `session-artifacts` is the runtime spine for active feature state and handoff safety
+- Active feature state lives in `.opencode/artifacts/features/<feature-slug>/` and is tracked through `status.yaml`
 
 ## Request Lifecycle
 1. User request lands with @feature-lead.
 2. @feature-lead **clarifies first** — iterates questions until scope, intent, and business value are clear. If user has no idea, offers default + trade-offs.
-3. `session_artifact_current` restores active feature state.
+3. Active feature state is retrieved from `.opencode/artifacts/features/<feature-slug>/status.yaml`.
 4. @context-gatherer maps current project and active work.
 5. If new feature: create HTML context bundle + status.yaml. If continuing: refresh the active artifact.
 6. Discovery and planning produce the compact context bundle.
@@ -19,7 +19,7 @@
 10. Any failure loops back to the owning agent.
 11. When the flow may compact before the final gates, @retrospective-writer captures a compact checkpoint.
 12. After a meaningful failure is resolved, the agent may ask whether the lesson should become a reusable skill or rule.
-13. Approved work summaries archived under `.opencode/archive/<feature-slug>.md` through the artifact finalizer.
+13. Approved work summaries archived under `.opencode/archive/<feature-slug>.md`.
 14. @archiver writes the final archive record.
 15. feature-lead synthesizes the final outcome.
 
@@ -56,8 +56,8 @@ Reusable diagram blocks live in `.opencode/templates/blocks/` for activity, swim
 - Active work lives in `.opencode/artifacts/features/<feature-slug>/`.
 - `.opencode/artifacts/` is local runtime state and should be git-ignored.
 - Planning docs and runtime evidence live side-by-side but stay separate.
-- Every subagent should start from `session_artifact_handoff` instead of a document dump.
-- `session_artifact_repo_delta` guards against drift between artifact state and git state.
+- Every subagent should receive an explicit, compact handoff packet from the previous agent — not a document dump.
+- A repo delta check (via `git status`) guards against drift between artifact state and git state.
 - Archive remains the immutable shipped summary.
 
 ## Flow Rules
@@ -114,3 +114,44 @@ Reusable diagram blocks live in `.opencode/templates/blocks/` for activity, swim
 - **Business before technical**: Capture who, what value, and success criteria before any technical planning.
 - **State assumptions**: Flag what you inferred and what is unverified.
 - **Compact but complete**: Keep context bundle output compact, but never skip user requirements.
+
+## Subagent Awareness — Tech Lead Notes
+
+This system uses a **multi-agent (subagent) architecture**. Understanding how subagents work is critical for debugging, extending, and maintaining the kit.
+
+### What is a Subagent?
+- A subagent is an agent spawned by another agent (typically `feature-lead`) to handle a specialized slice of work.
+- Each subagent runs in its own context window. It does **not** share memory with the parent agent.
+- Communication between agents is purely through **explicit, compact handoff packets** — not shared state or long prompts.
+
+### Handoff Protocol
+- Before handing off, the calling agent produces a minimal context packet: feature slug, current status, approved scope, and next action.
+- The receiving subagent reads this packet and operates independently.
+- After completing its work, the subagent returns a result or updates `status.yaml` so the orchestrating agent can pick up.
+
+### Why This Matters
+| Risk | Mitigation |
+|------|------------|
+| Context loss between agents | Always pass explicit handoff packets, never rely on implicit memory |
+| Conflicting edits | Agents gate on `status.yaml` stage before writing |
+| Runaway subagents | Each agent has a bounded `steps` setting in config |
+| Spec drift | Subagents must read from the canonical `spec.html`/`task.html`, not re-derive from conversation |
+| Archive corruption | Only `feature-lead` may finalize archives, and only when `status.yaml` is `done` |
+
+### Key Subagent Patterns
+1. **Read before write** — every subagent starts by reading current status, never assumes a state.
+2. **Compact output** — subagent results are brief: file paths changed, status update, blockers. No prose dumps.
+3. **Gate before advance** — subagents must not advance the workflow stage without meeting the gate condition (see Gate Rules above).
+4. **Fail loudly** — if a subagent encounters an ambiguity or missing input, it should surface a blocker rather than guess.
+5. **No orphan context** — if a session may compact, `retrospective-writer` captures a checkpoint. No work is lost silently.
+
+### Agent Permission Model
+- Each agent declares its tool permissions in `config.template.json` under `agent.<name>.permission.task`.
+- Default deny (`"*": "deny"`) means the agent cannot spawn other agents unless explicitly allowed.
+- Use the permission map to reason about blast radius when a subagent fails.
+
+### Extending the Subagent Network
+- Add a new agent: create a `.md` file in `.opencode/agents/`, define role, scope, and gate conditions.
+- Register permissions in `config.template.json`.
+- Update `ARCHITECTURE.md` Role Map and Command Map accordingly.
+- Do NOT add agents without a clear handoff pattern and a bounded `steps` cap.

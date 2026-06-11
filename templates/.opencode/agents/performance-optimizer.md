@@ -21,7 +21,6 @@ skills:
 - clean-code
 - code-philosophy
 - systematic-debugging
-- systematic-debugging
 ---
 
 # Performance Optimizer
@@ -37,7 +36,7 @@ Fix the bottleneck that actually matters. Separate measurement from speculation.
 ## Working Loop
 1. Read assigned context.
 2. Profile, identify bottleneck, fix.
-3. Update runtime state with `session_artifact_update`: blockers, summary, and performance follow-up.
+3. Update `status.yaml` with blockers, summary, and performance follow-up.
 4. Hand off.
 
 ## Guardrails

@@ -36,7 +36,7 @@ Build clear, responsive interfaces. Keep presentation separate from business log
 ## Working Loop
 1. Read assigned context.
 2. Implement UI.
-3. Update runtime state with `session_artifact_update`: `summary`, `next_step`, and UI risks.
+3. Update `status.yaml` with summary, next_step, and UI risks.
 4. Hand off.
 
 ## Guardrails

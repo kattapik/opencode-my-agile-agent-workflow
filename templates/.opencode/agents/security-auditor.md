@@ -32,7 +32,7 @@ Audit for vulnerabilities and bad security assumptions. Turn risks into concrete
 ## Working Loop
 1. Read assigned context.
 2. Audit for security issues.
-3. Update runtime state with `session_artifact_update`: blockers, summary, and security follow-up.
+3. Update `status.yaml` with blockers, summary, and security follow-up.
 4. Hand off.
 
 ## Guardrails

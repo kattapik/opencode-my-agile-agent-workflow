@@ -21,7 +21,6 @@ skills:
 - clean-code
 - systematic-debugging
 - code-philosophy
-- code-philosophy
 ---
 
 # Debugger
@@ -37,7 +36,7 @@ Reproduce the failure and narrow the root cause. Distinguish symptom from defect
 ## Working Loop
 1. Read assigned context.
 2. Reproduce, isolate, identify root cause.
-3. Update runtime state with `session_artifact_update`: blockers, summary, and the next debugging step.
+3. Update `status.yaml` with blockers, summary, and next debugging step.
 4. Hand off.
 
 ## Guardrails
